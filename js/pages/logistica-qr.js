@@ -182,6 +182,10 @@
     async function saveToDatabase(payloads, batchName) {
         if (!sessionRef) throw new Error("No hay sesión activa.");
 
+        // Deduplicate payloads for the database (unique constraint)
+        const uniquePayloads = [...new Set(payloads.filter(p => p && p.trim() !== ""))];
+        if (uniquePayloads.length === 0) throw new Error("No hay códigos válidos para guardar.");
+
         // 1. Create Batch
         const { data: batch, error: bError } = await supabaseClient
             .from("qr_batches")
@@ -192,10 +196,13 @@
             .select()
             .single();
 
-        if (bError) throw bError;
+        if (bError) {
+            console.error("Batch Error:", bError);
+            throw bError;
+        }
 
         // 2. Insert Codes
-        const codesToInsert = payloads.map(code => ({
+        const codesToInsert = uniquePayloads.map(code => ({
             batch_id: batch.id,
             code: code,
             status: 'PENDIENTE'
@@ -205,7 +212,13 @@
             .from("qr_codes")
             .insert(codesToInsert);
 
-        if (cError) throw cError;
+        if (cError) {
+            console.error("Codes Error:", cError);
+            if (cError.code === '23505') {
+                throw new Error("Uno o más códigos ya existen en la base de datos. Por favor, cambiá el texto base o el rango.");
+            }
+            throw cError;
+        }
 
         return batch;
     }
