@@ -179,7 +179,13 @@
   // =========================
   // Listeners
   // =========================
-  btnBack.onclick = () => window.location.href = "../index.html";
+  btnBack.onclick = () => {
+    if (auth?.role === "ADMIN") {
+      window.location.href = "../index.html";
+    } else {
+      window.location.href = "../auth/login.html";
+    }
+  };
 
   // =========================
   // Boot

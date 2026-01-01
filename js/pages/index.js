@@ -1,3 +1,52 @@
+    const client = window.supabaseClient;
+
+    async function checkAccess() {
+      if (!client) {
+        window.location.replace("./auth/login.html");
+        return;
+      }
+
+      const { data: sessData } = await client.auth.getSession();
+      if (!sessData?.session) {
+        window.location.replace("./auth/login.html");
+        return;
+      }
+
+      const { data: prof, error } = await client
+        .from("profiles")
+        .select("role")
+        .eq("id", sessData.session.user.id)
+        .single();
+
+      if (error || !prof) {
+        window.location.replace("./auth/login.html");
+        return;
+      }
+
+      const role = prof.role.toUpperCase();
+      
+      // Si es LOGISTICA, no entra al portal, va directo a su dashboard
+      if (role === "LOGISTICA") {
+        window.location.replace("./logistica/logistica-index.html");
+        return;
+      }
+      
+      // Otros roles (Operativo/Staff) tal vez también deban ser redirigidos si el portal es solo Admin
+      if (role === "OPERATIVO") {
+        window.location.replace("./operativo/operativo-index.html");
+        return;
+      }
+      if (role === "STAFF") {
+        window.location.replace("./staff/staff-index.html");
+        return;
+      }
+
+      // Si llegamos acá es ADMIN o similar, mostramos el portal
+      document.body.classList.remove("is-hidden");
+    }
+
+    checkAccess();
+
     document.getElementById("btnBack").addEventListener("click", () => {
       window.location.href = "./auth/login.html";
     });
