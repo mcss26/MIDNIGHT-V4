@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midnight ERP - Redireccionando...</title>
+    <!-- Redirección inmediata a la página de login -->
+    <meta http-equiv="refresh" content="0; url='pages/auth/login.html'" />
+    <script type="text/javascript">
+        // Redirección por JS como fallback
+        window.location.href = "pages/auth/login.html";
+    </script>
+    <style>
+        body {
+            background-color: #0B0C0D;
+            color: #F5F7FA;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .loader {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <p>Cargando Midnight ERP...</p>
+        <p><small>Si no eres redirigido, haz <a href="pages/auth/login.html" style="color: #FF0A1E;">click aquí</a>.</small></p>
+    </div>
+</body>
+</html>
