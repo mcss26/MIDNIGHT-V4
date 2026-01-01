@@ -1,0 +1,109 @@
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.dash-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  position: relative;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 140px;
+  isolation: isolate;
+}
+
+.dash-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  pointer-events: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.dash-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow);
+  border-color: transparent;
+}
+
+.dash-card:hover::before {
+  border-color: rgba(255,255,255,0.20);
+}
+
+.dash-card-inner { z-index: 2; width: 100%; }
+
+.dash-card-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.dash-card-staff::before    { border-color: rgba(56, 189, 248, 0.30); }
+.dash-card-enc::before      { border-color: rgba(250, 204, 21, 0.30); }
+.dash-card-op::before       { border-color: rgba(56, 189, 248, 0.30); }
+.dash-card-admin::before    { border-color: rgba(192, 132, 252, 0.30); }
+.dash-card-master::before   { border-color: rgba(255, 10, 30, 0.40); }
+.dash-card-gerencia::before { border-color: rgba(255, 255, 255, 0.20); }
+
+.access-group {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.access-group .dash-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 800px;
+  margin-top: 0;
+}
+
+.access-group .dash-card {
+  width: 100%;
+  min-height: 100px;
+  padding: 16px;
+  gap: 4px;
+}
+
+.access-group .dash-card-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+}
+
+.access-group .dash-title {
+  font-size: 20px;
+  letter-spacing: 0.15em;
+  margin: 0 0 4px 0;
+  width: 100%;
+  text-align: center;
+}
+
+.access-group .dash-card-label {
+  font-size: 12px;
+  opacity: .7;
+  margin: 0;
+  width: 100%;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .access-group .dash-grid { max-width: 100%; }
+}

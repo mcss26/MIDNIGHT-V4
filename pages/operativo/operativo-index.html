@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midnight — Panel Operativo</title>
+  <meta name="theme-color" content="#0B0C0D" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="../../css/main.css" />
+  <!-- Page Specific -->
+  <link rel="stylesheet" href="../../css/pages/operativo-index.css" />
+</head>
+
+<body>
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-top">
+        <div>
+          <button type="button" class="btn-secondary btn-back" id="btnBack">VOLVER</button>
+        </div>
+
+        <div class="admin-logo">PANEL OPERATIVO</div>
+
+        <div class="admin-header-right">
+          <span class="session-chip" id="sessionRole">Operativo</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <div class="minimalist-grid">
+      <!-- CALENDAR -->
+      <section class="cal-mini-wrap" aria-label="Calendario">
+        <div class="cal-mini-card">
+          <div class="cal-mini-month" id="calMonth">—</div>
+          <div class="cal-mini-weekdays" id="calWeekdays"></div>
+          <div class="cal-mini-grid" id="calGrid"></div>
+        </div>
+      </section>
+
+      <!-- INVENTORY NOTIFICATIONS -->
+      <section class="notif-panel-minimal" aria-label="Notificaciones de Inventario">
+        <div class="notif-head">
+          <h2 class="notif-title">INVENTARIO</h2>
+          <p class="notif-sub" id="notifUpdated">Actualizando...</p>
+        </div>
+        <ul class="notif-list" id="notifList">
+          <li class="notif-item">Cargando...</li>
+        </ul>
+        <div class="notif-muted is-hidden" id="notifError">Error de red.</div>
+      </section>
+    </div>
+
+    <!-- QUICK ACCESS -->
+    <div class="access-group">
+      <div class="dash-grid">
+        <a class="dash-card dash-card-op" href="operativo-stock-pedido.html">
+          <div class="dash-card-inner">
+            <div class="dash-title">GESTIÓN DE STOCK</div>
+            <p class="dash-card-label">Check, pedidos y reposición</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="../../config/config.js"></script>
+  <script src="../../js/pages/operativo-index.js"></script>
+</body>
+</html>

@@ -1,0 +1,379 @@
+<!-- /pages/master/master-calculadora.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midnight — Calculadora de Precio</title>
+  <meta name="theme-color" content="#0B0C0D" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../../css/main.css" />
+
+  <style>
+    .calc-grid{
+      display:grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 14px;
+      margin-top: 12px;
+      align-items:start;
+    }
+    @media (max-width: 920px){
+      .calc-grid{ grid-template-columns: 1fr; }
+    }
+    .calc-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+      justify-content:flex-end;
+    }
+    .kv .v.big{
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+    }
+    .muted-note{
+      margin: 8px 0 0;
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.35;
+    }
+    .split-2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 560px){
+      .split-2{ grid-template-columns: 1fr; }
+    }
+    .table-actions{
+      display:flex;
+      gap:8px;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+    }
+    .mono{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    /* Ad-hoc previews for calculator results */
+    .preview-box {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .preview-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+    .preview-line .k { color: var(--text-secondary); }
+    .preview-line .v { font-weight: 700; color: var(--text-primary); }
+  </style>
+</head>
+
+<body>
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-top">
+        <div>
+          <button type="button" class="btn-secondary btn-back" id="btnBack">VOLVER</button>
+        </div>
+
+        <div class="admin-logo">CALCULADORA</div>
+
+        <div class="admin-header-right">
+          <span class="session-chip">Master Data</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <div class="section-title">Calculadora de precio</div>
+    <p class="section-desc">Usa parametría (IVA / DGR / MUN / GAN) + fees por canal para sugerir precio.</p>
+
+    <nav class="tab-nav" role="tablist" id="tabsNav" aria-label="Secciones">
+      <button class="tab-btn active" data-tab="tabCalc" type="button">CALCULAR</button>
+      <button class="tab-btn" data-tab="tabHistory" type="button">HISTORIAL</button>
+      <button class="tab-btn" data-tab="tabConfig" type="button">CONFIG</button>
+    </nav>
+
+    <!-- TAB: CALC -->
+    <section id="tabCalc" class="tab-panel">
+      <div class="calc-grid">
+        <div class="box-soft">
+          <h2 class="section-title" style="text-align:left; margin:0; font-size:16px;">Inputs</h2>
+          <p class="section-desc" style="text-align:left; margin-top:6px;">Elegí canal y completá costos + margen objetivo.</p>
+
+          <div class="mt-2">
+            <label class="input-label" for="selChannel">Canal</label>
+            <select id="selChannel" class="modal-select"></select>
+          </div>
+
+          <div class="split-2 mt-2">
+            <div>
+              <label class="input-label" for="inCostNet">Costo neto</label>
+              <input id="inCostNet" class="modal-input" inputmode="decimal" placeholder="0.00" />
+            </div>
+            <div>
+              <label class="input-label" for="inInputsNet">Insumos / extras netos</label>
+              <input id="inInputsNet" class="modal-input" inputmode="decimal" placeholder="0.00" />
+            </div>
+          </div>
+
+          <div class="mt-2">
+            <label class="input-label" for="inMarginTarget">Margen objetivo (sobre venta neta)</label>
+            <input id="inMarginTarget" class="modal-input" inputmode="decimal" placeholder="35" />
+            <p class="muted-note">Ejemplo: 35 = 35%. La venta neta es el precio sin IVA.</p>
+          </div>
+
+          <div class="calc-actions">
+            <button type="button" class="btn-secondary" id="btnReset">Limpiar</button>
+            <button type="button" class="btn-primary" id="btnCalc">Calcular</button>
+          </div>
+
+          <div class="status-line" id="calcMsg" style="display:none; margin-top:10px;"></div>
+        </div>
+
+        <div class="box-soft">
+          <h2 class="section-title" style="text-align:left; margin:0; font-size:16px;">Resultado</h2>
+          <p class="section-desc" style="text-align:left; margin-top:6px;">Si el cálculo no es posible, revisá margen o fees.</p>
+
+          <div class="details-wrap" style="margin-top:12px;">
+            <div class="details-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
+              <div class="kv">
+                <div class="k">Precio sugerido (con IVA)</div>
+                <div class="v big" id="outPriceFinal">—</div>
+              </div>
+              <div class="kv">
+                <div class="k">Venta neta (sin IVA)</div>
+                <div class="v big" id="outNetSale">—</div>
+              </div>
+              <div class="kv">
+                <div class="k">Margen logrado (post GAN)</div>
+                <div class="v big" id="outMargin">—</div>
+              </div>
+            </div>
+
+            <div class="details-actions" style="margin-top:16px;">
+              <button type="button" class="btn-secondary" id="btnCopyJson" disabled>Copiar JSON</button>
+              <button type="button" class="btn-primary" id="btnSaveRun" disabled>Guardar corrida</button>
+            </div>
+          </div>
+
+          <div class="preview-box" style="margin-top:20px;">
+            <div class="preview-line"><span class="k">Canal</span><span class="v" id="outChannel">—</span></div>
+            <div class="preview-line"><span class="k">Costo total</span><span class="v" id="outTotalCost">—</span></div>
+            <div class="preview-line"><span class="k">Fees canal (tax-adjusted)</span><span class="v" id="outChannelFees">—</span></div>
+            <div class="preview-line"><span class="k">DGR + MUN</span><span class="v" id="outLocalTaxes">—</span></div>
+            <div class="preview-line"><span class="k">Ganancia antes de GAN</span><span class="v" id="outProfitBeforeGan">—</span></div>
+            <div class="preview-line"><span class="k">GAN (impuesto)</span><span class="v" id="outGanTax">—</span></div>
+            <div class="preview-line"><span class="k">Ganancia neta</span><span class="v" id="outProfitAfter">—</span></div>
+            <div class="preview-line"><span class="k">Cobro neto (post canal)</span><span class="v" id="outNetReceived">—</span></div>
+          </div>
+
+          <p class="muted-note" id="outParamsLine" style="margin-top:10px;">—</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB: HISTORY -->
+    <section id="tabHistory" class="tab-panel" style="display:none;">
+      <h2 class="section-title" style="font-size:18px;">Historial</h2>
+      <p class="section-desc">Últimas corridas guardadas.</p>
+
+      <div class="box-soft" style="margin-top:12px;">
+        <div class="table-container">
+          <table class="sku-table">
+            <thead>
+              <tr>
+                <th class="cell-pl">Fecha</th>
+                <th>Canal</th>
+                <th class="text-right">Costo</th>
+                <th class="text-right">Margen %</th>
+                <th class="text-right">Precio (con IVA)</th>
+                <th class="text-center cell-pr">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="historyBody">
+              <tr><td colspan="6" class="text-center text-muted" style="padding:34px;">Cargando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB: CONFIG -->
+    <section id="tabConfig" class="tab-panel" style="display:none;">
+      <h2 class="section-title" style="font-size:18px;">Configuración</h2>
+      <p class="section-desc">Parámetros activos y canales. (Solo Admin)</p>
+
+      <div class="calc-grid">
+        <div class="box-soft">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+            <div>
+              <h3 class="section-title" style="text-align:left; margin:0; font-size:16px;">Parámetros</h3>
+              <p class="section-desc" style="text-align:left; margin-top:6px;">Set de impuestos activo.</p>
+            </div>
+            <button type="button" class="btn-primary" id="btnEditParams">Nuevo set</button>
+          </div>
+
+          <div class="preview-box" id="paramsBox" style="margin-top:12px;">
+            <div class="preview-line"><span class="k">IVA</span><span class="v" id="pIva">—</span></div>
+            <div class="preview-line"><span class="k">DGR</span><span class="v" id="pDgr">—</span></div>
+            <div class="preview-line"><span class="k">MUN</span><span class="v" id="pMun">—</span></div>
+            <div class="preview-line"><span class="k">GAN</span><span class="v" id="pGan">—</span></div>
+            <div class="preview-line"><span class="k">Crédito IVA fees</span><span class="v" id="pFeeVat">—</span></div>
+            <div class="preview-line"><span class="k">Vigente desde</span><span class="v" id="pValidFrom">—</span></div>
+          </div>
+        </div>
+
+        <div class="box-soft">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+            <div>
+              <h3 class="section-title" style="text-align:left; margin:0; font-size:16px;">Canales</h3>
+              <p class="section-desc" style="text-align:left; margin-top:6px;">Gestión de aranceles.</p>
+            </div>
+            <button type="button" class="btn-primary" id="btnNewChannel">Nuevo canal</button>
+          </div>
+
+          <div class="table-container" style="margin-top:12px;">
+            <table class="sku-table">
+              <thead>
+                <tr>
+                  <th class="cell-pl">Nombre</th>
+                  <th class="text-right">Arancel</th>
+                  <th class="text-right">Ret</th>
+                  <th class="text-center">Estado</th>
+                  <th class="text-center cell-pr">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="channelsBody">
+                <tr><td colspan="5" class="text-center text-muted" style="padding:34px;">Cargando...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: PARAMS -->
+  <div class="modal-overlay" id="paramsModal" aria-hidden="true" style="display: none;">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-label="Parámetros">
+      <h2 class="section-title modal-title-sm modal-title-left">Nuevo set de parámetros</h2>
+      <p class="section-desc modal-desc-sm modal-desc-left">Crea un set activo (desactiva el anterior).</p>
+
+      <form id="paramsForm" class="mt-2">
+        <div class="split-2">
+          <div class="mt-2">
+            <label class="input-label" for="fIva">IVA (%)</label>
+            <input id="fIva" class="modal-input" inputmode="decimal" placeholder="21" />
+          </div>
+          <div class="mt-2">
+            <label class="input-label" for="fGan">GAN (%)</label>
+            <input id="fGan" class="modal-input" inputmode="decimal" placeholder="35" />
+          </div>
+        </div>
+
+        <div class="split-2">
+          <div class="mt-2">
+            <label class="input-label" for="fDgr">DGR (%)</label>
+            <input id="fDgr" class="modal-input" inputmode="decimal" placeholder="3" />
+          </div>
+          <div class="mt-2">
+            <label class="input-label" for="fMun">MUN (%)</label>
+            <input id="fMun" class="modal-input" inputmode="decimal" placeholder="1" />
+          </div>
+        </div>
+
+        <div class="mt-2">
+          <label class="toolbar-check-inline section-desc">
+            <input type="checkbox" id="fFeeVatCredit" />
+            Crédito IVA sobre fees
+          </label>
+        </div>
+
+        <div class="mt-2">
+          <label class="input-label" for="fValidFrom">Vigente desde</label>
+          <input id="fValidFrom" class="modal-input" type="date" />
+        </div>
+      </form>
+
+      <div class="modal-btns">
+        <button type="button" class="btn-secondary" id="btnParamsCancel">Cancelar</button>
+        <button type="button" class="btn-primary" id="btnParamsSave">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CHANNEL -->
+  <div class="modal-overlay" id="channelModal" aria-hidden="true" style="display: none;">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-label="Canal">
+      <h2 class="section-title modal-title-sm modal-title-left" id="channelModalTitle">Canal</h2>
+      <p class="section-desc modal-desc-sm modal-desc-left" id="channelModalSub">Crear o editar canal.</p>
+
+      <form id="channelForm" class="mt-2">
+        <input type="hidden" id="cId" />
+
+        <div class="mt-2">
+          <label class="input-label" for="cName">Nombre</label>
+          <input id="cName" class="modal-input" placeholder="Ej: MERCADOPAGO" />
+        </div>
+
+        <div class="split-2">
+          <div class="mt-2">
+            <label class="input-label" for="cArancel">Arancel (%)</label>
+            <input id="cArancel" class="modal-input" inputmode="decimal" placeholder="6" />
+          </div>
+          <div class="mt-2">
+            <label class="input-label" for="cRet">Ret (%)</label>
+            <input id="cRet" class="modal-input" inputmode="decimal" placeholder="0" />
+          </div>
+        </div>
+
+        <div class="mt-2">
+          <label class="input-label" for="cObs">Obs</label>
+          <textarea id="cObs" class="modal-input" rows="3" placeholder="Notas..."></textarea>
+        </div>
+
+        <div class="mt-2">
+          <label class="toolbar-check-inline section-desc">
+            <input type="checkbox" id="cActive" />
+            Canal activo
+          </label>
+        </div>
+      </form>
+
+      <div class="modal-btns">
+        <button type="button" class="btn-secondary" id="btnChannelCancel">Cancelar</button>
+        <button type="button" class="btn-primary" id="btnChannelSave">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: VIEW JSON -->
+  <div class="modal-overlay" id="jsonModal" aria-hidden="true" style="display: none;">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-label="Detalle JSON">
+      <h2 class="section-title modal-title-sm modal-title-left">Detalle de corrida</h2>
+      <pre class="preview-box mono mt-2" id="jsonPre" style="max-height:40vh; overflow:auto;"></pre>
+      <div class="modal-btns">
+        <button type="button" class="btn-secondary" id="btnJsonClose">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../../config/config.js"></script>
+  <script src="../../js/pages/master-calculadora.js"></script>
+</body>
+</html>

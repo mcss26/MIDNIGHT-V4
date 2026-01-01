@@ -1,0 +1,134 @@
+/* /css/pages/admin-movimientos.css */
+
+.page-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+}
+
+.page-meta .hint {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.page-meta .count {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-primary, #6366f1);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* TABS rely on global components/tabs.css */
+
+/* TABLE */
+.list-row {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.list-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.list-row.is-open {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.row-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 13px;
+}
+
+.row-sub-text {
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.delta {
+  font-weight: 800;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.delta.is-pos { color: #10b981; }
+.delta.is-neg { color: #ef4444; }
+.delta.is-zero { color: var(--text-secondary); opacity: 0.6; }
+
+.row-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+/* DETAILS ROW */
+.details-row td {
+  padding: 0 !important;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.details-wrap {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  border-bottom: 1px solid var(--border-subtle);
+  animation: slideDown 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.details-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.kv {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kv .k {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.kv .v {
+  font-size: 13px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.is-hidden { display: none !important; }
+
+/* UTILS */
+.btn-xs {
+  padding: 4px 10px;
+  font-size: 11px;
+  border-radius: 6px;
+}
+
+@media (max-width: 1024px) {
+  .details-wrap { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .details-wrap { grid-template-columns: 1fr; }
+  .row-actions { flex-direction: column; align-items: stretch; }
+}

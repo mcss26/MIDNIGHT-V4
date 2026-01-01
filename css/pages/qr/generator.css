@@ -1,0 +1,223 @@
+/* CSS for QR Generator Module */
+
+.qr-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+    margin-top: 24px;
+}
+
+@media (max-width: 900px) {
+    .qr-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Form Fields */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.field label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.field input, 
+.field select, 
+.field textarea {
+    background: var(--surface-hover);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.field input:focus, 
+.field select:focus, 
+.field textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: var(--surface-active);
+}
+
+.field textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+/* Layout Helpers */
+.row {
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    gap: 20px;
+}
+
+.row3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+}
+
+/* Preview Card */
+.qr-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    height: fit-content;
+    position: sticky;
+    top: calc(var(--header-height) + 24px);
+}
+
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.preview-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.preview-area {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+/* Preview Items */
+.preview-card {
+    display: flex;
+    gap: 12px;
+    background: #fff; /* Always white for contrast */
+    padding: 12px;
+    border-radius: 8px;
+    color: #000;
+    align-items: center;
+}
+
+.preview-card-qr canvas, 
+.preview-card-qr img {
+    display: block;
+    width: 60px !important;
+    height: 60px !important;
+}
+
+.preview-card-caption {
+    font-size: 10px;
+    font-family: monospace;
+    word-break: break-all;
+    line-height: 1.2;
+    flex: 1;
+}
+
+/* Scrollbar Style */
+.preview-area::-webkit-scrollbar {
+    width: 6px;
+}
+.preview-area::-webkit-scrollbar-track {
+    background: transparent;
+}
+.preview-area::-webkit-scrollbar-thumb {
+    background: var(--border-subtle);
+    border-radius: 3px;
+}
+
+/* Print Styles */
+@media print {
+    @page { 
+        margin: 0; 
+        size: auto; 
+    }
+    
+    body * {
+        visibility: hidden;
+    }
+    
+    #printArea, #printArea * {
+        visibility: visible;
+    }
+    
+    #printArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: white;
+        color: black;
+    }
+    
+    .ticket {
+        page-break-after: always; /* Force break for thermal printers */
+        break-after: page;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: var(--paper-mm, 80mm); 
+        padding-top: 5mm;
+        margin: 0 auto;
+    }
+
+    .ticket-inner {
+        width: 100%;
+        text-align: center;
+    }
+
+    .t-title {
+        font-family: sans-serif;
+        font-weight: 800;
+        font-size: 12pt;
+        text-transform: uppercase;
+        margin-bottom: 2mm;
+    }
+
+    .t-qr {
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .t-qr img, .t-qr canvas {
+        width: var(--qr-mm, 35mm) !important;
+        height: var(--qr-mm, 35mm) !important;
+    }
+
+    .t-code {
+        font-family: monospace;
+        font-size: 8pt;
+        margin-top: 2mm;
+        word-break: break-all;
+    }
+
+    .t-feed {
+        height: var(--gap-mm, 6mm);
+    }
+}

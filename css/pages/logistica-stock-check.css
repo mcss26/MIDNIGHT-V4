@@ -1,0 +1,137 @@
+/* /css/pages/logistica-stock-check.css */
+
+/* Tabs */
+.tab-nav {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.tab-btn {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 0.5rem 1rem;
+  border-radius: 99px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  background: var(--text-primary);
+  color: #000;
+  border-color: var(--text-primary);
+}
+
+/* Status Line */
+.status-line {
+  height: 20px;
+  font-size: 0.85rem;
+  color: #60a5fa; /* Blue-400 equivalent */
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+/* Table */
+.table-container {
+  overflow-x: auto;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+}
+
+.sku-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sku-table th {
+  padding: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(0, 0, 0, 0.2);
+  position: sticky;
+  top: 0;
+}
+
+.sku-table td {
+  padding: 1rem;
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.sku-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Cell alignment */
+.text-center { text-align: center; }
+.text-muted { color: var(--text-secondary); }
+.cell-pl { padding-left: 1.5rem; }
+.cell-pr { padding-right: 1.5rem; }
+
+/* Content styling */
+.row-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.row-sub-text {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* Inputs */
+.table-input {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.table-input:focus {
+  outline: none;
+  border-color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.table-input--narrow {
+  width: 80px;
+}
+
+/* Checkbox */
+.toolbar-check input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--text-primary);
+  cursor: pointer;
+}
+
+/* Buttons inside table */
+.sku-table .btn-primary {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+}

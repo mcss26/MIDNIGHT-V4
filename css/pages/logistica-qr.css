@@ -1,0 +1,163 @@
+/* /css/pages/logistica-qr.css */
+
+/* Layout & Spacing */
+.admin-container {
+    max-width: var(--max-width-container);
+    margin: 0 auto;
+    padding: 24px 24px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.section-header .admin-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: #fff;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.section-header .admin-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    opacity: 0.7;
+    margin-bottom: 24px;
+}
+
+.section-header .actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+/* Grid & Panels standardized to Admin Dashboards */
+.qr-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.qr-config-panel, 
+.qr-preview-panel {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 28px; /* Matches admin-pagos.css cards */
+    padding: 32px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.qr-preview-panel {
+    max-width: 388px; /* Standard dashboard card width */
+    position: sticky;
+    top: calc(var(--header-height) + 24px);
+}
+
+@media (max-width: 1000px) {
+    .qr-grid { flex-direction: column; align-items: center; }
+    .qr-config-panel, .qr-preview-panel { max-width: 100%; position: static; }
+}
+
+/* Form refinement */
+.field {
+    margin-bottom: 24px;
+}
+
+.field .input-label {
+    padding-left: 2px;
+}
+
+.row, .row3 {
+    display: grid;
+    gap: 20px;
+}
+
+.row { grid-template-columns: 1fr 1fr; }
+.row3 { grid-template-columns: 1fr 1fr 1fr; }
+
+/* Preview refinement */
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.preview-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+.preview-area {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.preview-card {
+    display: flex;
+    gap: 16px;
+    background: #fff;
+    padding: 16px;
+    border-radius: 16px;
+    color: #000;
+    align-items: center;
+}
+
+.preview-card-qr canvas, 
+.preview-card-qr img {
+    display: block;
+    width: 64px !important;
+    height: 64px !important;
+}
+
+.preview-card-caption {
+    font-size: 10px;
+    font-family: monospace;
+    word-break: break-all;
+    line-height: 1.2;
+    flex: 1;
+    opacity: 0.7;
+}
+
+/* Scrollbar Style */
+.preview-area::-webkit-scrollbar { width: 4px; }
+.preview-area::-webkit-scrollbar-track { background: transparent; }
+.preview-area::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+
+/* Print Styles */
+@media print {
+    @page { margin: 0; size: auto; }
+    body * { visibility: hidden; }
+    #printArea, #printArea * { visibility: visible; }
+    #printArea { position: absolute; left: 0; top: 0; width: 100%; background: white; color: black; }
+    .ticket { page-break-after: always; break-after: page; display: flex; flex-direction: column; align-items: center; justify-content: center; width: var(--paper-mm, 80mm); padding-top: 5mm; margin: 0 auto; }
+    .ticket-inner { width: 100%; text-align: center; }
+    .t-title { font-family: sans-serif; font-weight: 800; font-size: 12pt; text-transform: uppercase; margin-bottom: 2mm; }
+    .t-qr { margin: 0 auto; display: flex; justify-content: center; }
+    .t-qr img, .t-qr canvas { width: var(--qr-mm, 35mm) !important; height: var(--qr-mm, 35mm) !important; }
+    .t-code { font-family: monospace; font-size: 8pt; margin-top: 2mm; word-break: break-all; }
+    .t-feed { height: var(--gap-mm, 6mm); }
+}

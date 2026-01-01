@@ -1,0 +1,121 @@
+<!-- /pages/master/master-cargos.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midnight — Cargos</title>
+  <meta name="theme-color" content="#0B0C0D" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/pages/master-checklist.css" />
+</head>
+
+<body>
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-top">
+        <div>
+          <button type="button" class="btn-secondary btn-back" id="btnBack">VOLVER</button>
+        </div>
+
+        <div class="admin-logo">CARGOS</div>
+
+        <div class="admin-header-right">
+          <span class="session-chip">Master Data</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <input
+          id="searchRole"
+          class="search-input-admin"
+          type="text"
+          placeholder="Buscar por cargo o área..."
+        />
+      </div>
+
+      <div class="toolbar-right">
+        <label class="toolbar-check-inline section-desc">
+          <input type="checkbox" id="showInactive" />
+          Ver inactivos
+        </label>
+
+        <button class="btn-primary" type="button" id="newRoleBtn">Nuevo cargo</button>
+      </div>
+    </div>
+
+    <nav class="tab-nav" id="areaTabs" aria-label="Áreas"></nav>
+
+    <div id="statusLine" class="status-line"></div>
+
+    <div class="table-container">
+      <table class="sku-table" id="rolesTable" aria-label="Listado de cargos">
+        <thead>
+          <tr>
+            <th class="cell-pl">CARGO</th>
+            <th class="text-center">ÁREA</th>
+            <th class="text-right">REMUNERACIÓN</th>
+            <th class="text-center">ESTADO</th>
+            <th class="text-center cell-pr">ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="5" class="text-center text-muted">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="roleModal" aria-hidden="true" style="display: none;">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-label="Cargo">
+      <h2 class="section-title modal-title-sm modal-title-left" id="roleModalTitle">CARGO</h2>
+      <p class="section-desc modal-desc-sm modal-desc-left" id="roleModalSub">Crear o editar cargo.</p>
+
+      <form id="roleForm">
+        <input type="hidden" id="rId" />
+
+        <div class="mt-2">
+          <label class="input-label" for="rName">Cargo</label>
+          <input id="rName" class="modal-input" type="text" placeholder="Ej: BARTENDER" required />
+        </div>
+
+        <div class="mt-2">
+          <label class="input-label" for="rArea">Área</label>
+          <select id="rArea" class="modal-select"></select>
+        </div>
+
+        <div class="mt-2">
+          <label class="input-label" for="rPay">Remuneración (ARS)</label>
+          <input id="rPay" class="modal-input" type="number" min="0" step="1" placeholder="Ej: 30000" />
+        </div>
+
+        <div class="mt-2">
+          <label class="toolbar-check-inline section-desc" for="rIsActive">
+            <input type="checkbox" id="rIsActive" />
+            Cargo activo
+          </label>
+        </div>
+      </form>
+
+      <div class="modal-btns">
+        <button type="button" class="btn-secondary" id="cancelRoleBtn">Cancelar</button>
+        <button type="button" class="btn-primary" id="saveRoleBtn">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../../config/config.js"></script>
+  <script src="../../js/pages/master-cargos.js"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midnight — Admin Movimientos</title>
+  <meta name="theme-color" content="#0B0C0D" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="../../css/main.css" />
+  <!-- Page Specific -->
+  <link rel="stylesheet" href="../../css/pages/admin-movimientos.css" />
+</head>
+
+<body>
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-top">
+        <div>
+          <button type="button" class="btn-secondary btn-back" id="btnBack">VOLVER</button>
+        </div>
+
+        <div class="admin-logo">MOVIMIENTOS</div>
+
+        <div class="admin-header-right">
+          <span class="session-chip">Admin</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <nav class="tab-nav" id="statusTabs" aria-label="Estados">
+      <button type="button" class="tab-btn active" data-st="PENDING">PENDIENTES</button>
+      <button type="button" class="tab-btn" data-st="APPROVED">APROBADOS</button>
+      <button type="button" class="tab-btn" data-st="REJECTED">RECHAZADOS</button>
+      <button type="button" class="tab-btn" data-st="CANCELLED">CANCELADOS</button>
+      <button type="button" class="tab-btn" data-st="ALL">TODOS</button>
+    </nav>
+
+    <div class="page-meta" aria-label="Estado">
+      <div class="hint" id="statusLine"></div>
+      <div class="count" id="countLine"></div>
+    </div>
+
+    <div class="table-container">
+      <table class="sku-table" id="movTable" aria-label="Movimientos de Stock">
+        <thead>
+          <tr>
+            <th class="cell-pl">ITEM</th>
+            <th class="text-center">SISTEMA</th>
+            <th class="text-center">OBSERVADO</th>
+            <th class="text-center">AJUSTAR</th>
+            <th class="text-center">TARGET</th>
+            <th class="text-center">DELTA</th>
+            <th class="text-center">ESTADO</th>
+            <th class="text-center cell-pr">ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="8" class="text-center text-muted">Cargando movimientos...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="../../config/config.js"></script>
+  <script src="../../js/pages/admin-movimientos.js"></script>
+</body>
+</html>

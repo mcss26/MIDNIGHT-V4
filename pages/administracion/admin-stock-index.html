@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midnight — Admin Stock</title>
+  <meta name="theme-color" content="#0B0C0D" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="../../css/main.css" />
+  <!-- Page Specific -->
+  <link rel="stylesheet" href="../../css/pages/admin-stock-index.css" />
+</head>
+
+<body>
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-top">
+        <div>
+          <button type="button" class="btn-secondary btn-back" id="btnBack">VOLVER</button>
+        </div>
+
+        <div class="admin-logo">STOCK</div>
+
+        <div class="admin-header-right">
+          <span class="session-chip">Admin</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <div class="access-group">
+      <div class="dash-grid" aria-label="Admin Stock">
+        
+        <a class="dash-card dash-card-admin" href="admin-stock.html" aria-label="Ir a Stock Check">
+          <span class="notif-badge is-hidden" id="badgeChecks">0</span>
+          <div class="dash-card-inner">
+            <div class="dash-title">STOCK CHECK</div>
+            <p class="dash-card-label">Stock actual + solicitar check</p>
+          </div>
+        </a>
+
+        <a class="dash-card dash-card-admin" href="admin-stock-pedido.html" aria-label="Ir a Solicitudes">
+          <span class="notif-badge is-hidden" id="badgeSolicitudes">0</span>
+          <div class="dash-card-inner">
+            <div class="dash-title">SOLICITUDES</div>
+            <p class="dash-card-label">Pedidos de reposición</p>
+          </div>
+        </a>
+
+        <a class="dash-card dash-card-admin" href="admin-movimientos.html" aria-label="Ir a Movimientos">
+          <span class="notif-badge is-hidden" id="badgeMoves">0</span>
+          <div class="dash-card-inner">
+            <div class="dash-title">MOVIMIENTOS</div>
+            <p class="dash-card-label">Ajustes pendientes</p>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="../../config/config.js"></script>
+  <script src="../../js/pages/admin-stock-index.js"></script>
+</body>
+</html>

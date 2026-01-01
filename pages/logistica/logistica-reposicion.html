@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midnight — Logística Reposición</title>
+  <meta name="theme-color" content="#0B0C0D" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/pages/logistica-reposicion.css" />
+</head>
+
+<body>
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-top">
+        <div>
+          <button type="button" class="btn-secondary btn-back" id="btnBack">VOLVER</button>
+        </div>
+
+        <div class="admin-logo">REPOSICIÓN DE STOCK</div>
+
+        <div class="admin-header-right">
+          <span class="session-chip">Logística</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <div id="statusLine" class="status-line"></div>
+
+    <div class="table-container">
+      <table class="sku-table" id="repTable" aria-label="Reposición de stock">
+        <thead>
+          <tr>
+            <th class="cell-pl">NOMBRE</th>
+            <th class="text-center">PACKS ESPERADOS</th>
+            <th class="text-center">UNIDADES ESPERADAS</th>
+            <th class="text-center">DIFERENCIA</th>
+            <th class="text-center cell-pr">CHECK</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="5" class="text-center text-muted">Cargando...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="../../config/config.js"></script>
+  <script src="../../js/pages/logistica-reposicion.js"></script>
+</body>
+</html>

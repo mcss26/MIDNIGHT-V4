@@ -1,0 +1,28 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; width: 100%; }
+
+img { max-width: 100%; height: auto; display: block; }
+input, button, textarea, select { font: inherit; }
+a { text-decoration: none; color: inherit; }
+
+/* Inputs numéricos sin flechas */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] { -moz-appearance: textfield; }
+
+/* Scrollbars */
+body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-red) rgba(255,255,255,0.04);
+}
+body::-webkit-scrollbar { width: 8px; height: 8px; }
+body::-webkit-scrollbar-track { background: transparent; }
+body::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.12);
+  border-radius: var(--radius-pill);
+}
+body::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }

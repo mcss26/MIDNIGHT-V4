@@ -1,0 +1,51 @@
+/* /css/pages/master-checklist.css */
+
+.btn-action-edit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.btn-action-edit:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--text-secondary);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+.btn-action-edit svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+/* Row refinements */
+.is-inactive {
+    opacity: 0.5;
+}
+
+.row-sub {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.mono {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-weight: 600;
+}
+
+.tag-gray {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-subtle);
+}

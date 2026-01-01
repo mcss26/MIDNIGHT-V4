@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Midnight — Imprimir QRs</title>
+
+    <link rel="stylesheet" href="../../css/main.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+    <!-- Custom generator styles override/additions -->
+    <link rel="stylesheet" href="../../css/pages/qr/generator.css" />
+
+    <!-- QR generator (simple y liviano) -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"
+      defer
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../config/config.js"></script>
+    <script src="../../js/pages/qr/generator.js" defer></script>
+  </head>
+
+  <body>
+    <header class="admin-header">
+        <div class="admin-header-inner">
+            <div class="admin-header-top">
+                <button id="btnBack" class="btn btn-ghost" type="button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                    Volver
+                </button>
+                <div class="admin-logo">PORTAL</div>
+                <div class="admin-header-right">
+                    <span class="session-chip">Midnight</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-container">
+        <div class="section-header">
+            <h1 class="admin-title">Imprimir QRs</h1>
+            <p class="admin-subtitle">Configuración y generación masiva de accesos.</p>
+            <div class="actions" style="margin-top: 16px;">
+                <button id="btnPreview" class="btn btn-secondary" type="button">Previsualizar</button>
+                <button id="btnPrint" class="btn btn-primary" type="button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><rect width="12" height="8" x="6" y="14" /></svg>
+                    Guardar e Imprimir
+                </button>
+            </div>
+        </div>
+      <div class="qr-grid">
+        <!-- Configuración -->
+          <div class="field">
+            <label>Nombre del Lote (Ej: VIP Viernes)</label>
+            <input id="batchName" type="text" placeholder="Entrada General" value="Entrada General" />
+          </div>
+
+          <div class="field">
+            <label>URL o Texto Base</label>
+            <textarea
+              id="baseText"
+              placeholder="https://midnightclub.com.ar/accesos"
+            >
+https://midnightclub.com.ar/accesos</textarea
+            >
+            <p class="hint">
+              Base para la generación de códigos. En modo secuencial o UUID se
+              añadirá al final.
+            </p>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label>Modo de Generación</label>
+              <select id="mode">
+                <option value="same">Estático (Mismo texto)</option>
+                <option value="seq">Secuencial (Base + N°)</option>
+                <option value="uuid" selected>Único (Base + UUID)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Cantidad (máx. 500)</label>
+              <input id="qty" type="number" min="1" max="500" value="20" />
+            </div>
+          </div>
+
+          <div class="row3">
+            <div class="field">
+              <label>Papel</label>
+              <select id="paper">
+                <option value="80">80mm</option>
+                <option value="58">58mm</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Tamaño QR</label>
+              <select id="qrSize">
+                <option value="28">28mm</option>
+                <option value="32">32mm</option>
+                <option value="35" selected>35mm</option>
+                <option value="40">40mm</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Separación</label>
+              <select id="gap">
+                <option value="3">3mm</option>
+                <option value="6" selected>6mm</option>
+                <option value="10">10mm</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field" id="seqOptions" style="display: none">
+            <label>Configuración Secuencial</label>
+            <div class="row3">
+              <div class="field">
+                <input
+                  id="seqStart"
+                  type="number"
+                  min="0"
+                  value="1"
+                  placeholder="Inicio"
+                />
+              </div>
+              <div class="field">
+                <input
+                  id="seqDigits"
+                  type="number"
+                  min="1"
+                  max="10"
+                  value="6"
+                  placeholder="Dígitos"
+                />
+              </div>
+              <div class="field">
+                <input
+                  id="seqSep"
+                  type="text"
+                  value="-"
+                  placeholder="Sep."
+                  maxlength="2"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Marca / Título (opcional)</label>
+            <input
+              id="titleText"
+              type="text"
+              placeholder="MIDNIGHT CLUB"
+              value="MIDNIGHT CLUB"
+            />
+            <p class="hint">Aparecerá arriba de cada código en el ticket.</p>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="qr-card">
+          <div class="preview-header">
+            <div>
+              <span class="preview-title">Vista Previa</span>
+              <div class="hint" id="previewMeta">Listo para generar</div>
+            </div>
+            <button id="btnClear" class="btn btn-ghost" type="button">
+              Limpiar
+            </button>
+          </div>
+          <div id="previewArea" class="preview-area">
+            <!-- QR cards will be injected here -->
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div id="printArea"></div>
+  </body>
+</html>

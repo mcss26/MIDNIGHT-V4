@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midnight — Admin Pagos</title>
+  <meta name="theme-color" content="#0B0C0D" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="../../css/main.css" />
+  <!-- Page Specific -->
+  <link rel="stylesheet" href="../../css/pages/admin-pagos.css" />
+</head>
+
+<body>
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-top">
+        <div>
+          <button type="button" class="btn-secondary btn-back" id="btnBack">VOLVER</button>
+        </div>
+
+        <div class="admin-logo">PAGOS</div>
+
+        <div class="admin-header-right">
+          <span class="session-chip">Admin</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <div class="minimalist-grid">
+      <!-- CALENDAR MINI -->
+      <section class="cal-mini-wrap" aria-label="Calendario">
+        <div class="cal-mini-card">
+          <div class="cal-mini-month" id="calMonthMini">—</div>
+          <div class="cal-mini-weekdays" id="calWeekdaysMini"></div>
+          <div class="cal-mini-grid" id="calGridMini"></div>
+        </div>
+      </section>
+
+      <!-- NOTIFICACIONES -->
+      <section class="notif-panel-minimal" aria-label="Notificaciones">
+        <div class="notif-head">
+          <h2 class="notif-title">NOTIFICACIONES</h2>
+          <p class="notif-sub" id="notifUpdatedDash">Actualizando...</p>
+        </div>
+        <ul class="notif-list" id="notifListDash">
+          <li class="notif-item">Cargando...</li>
+        </ul>
+        <div class="notif-muted is-hidden" id="notifErrorDash">Error de red.</div>
+      </section>
+    </div>
+
+    <nav class="tab-nav" id="mainTabs" aria-label="Pagos tabs">
+      <button type="button" class="tab-btn active" data-tab="TODOS">TODOS</button>
+      <button type="button" class="tab-btn" data-tab="PEDIDOS">PEDIDOS</button>
+      <button type="button" class="tab-btn" data-tab="APERTURA">COSTO DE APERTURA</button>
+      <button type="button" class="tab-btn" data-tab="RECURRENTES">RECURRENTES</button>
+      <button type="button" class="tab-btn" data-tab="EXTRAS">EXTRAS</button>
+      <button type="button" class="tab-btn" data-tab="CONFIG">CONFIG</button>
+    </nav>
+
+    <div id="statusLine" class="status-line"></div>
+
+    <!-- =======================
+         TODOS
+         ======================= -->
+    <section id="panelCalendario">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <input id="queueSearch" class="search-input-admin" type="text" placeholder="Buscar pago / proveedor..." />
+        </div>
+        <div class="toolbar-right">
+          <button type="button" class="btn-primary" id="btnViewPending">PENDIENTES</button>
+          <button type="button" class="btn-secondary" id="btnViewDone">REALIZADOS</button>
+          <button type="button" class="btn-secondary" id="btnClearDay">VER TODO</button>
+        </div>
+      </div>
+
+      <div id="queueSummary" class="notif-muted" style="margin-top:6px;"></div>
+
+      <div class="table-container" id="pendingQueueWrap">
+        <table class="sku-table" id="pendingQueueTable" aria-label="Pendientes próximos">
+          <thead>
+            <tr>
+              <th class="cell-pl">PAGO</th>
+              <th class="text-center">TIPO</th>
+              <th class="text-center">VENCE</th>
+              <th class="text-right">TOTAL</th>
+              <th class="text-center">ESTADO</th>
+              <th class="text-center cell-pr">ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="6" class="text-center text-muted">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-container is-hidden" id="doneRecentWrap">
+        <table class="sku-table" id="doneRecentTable" aria-label="Realizados recientes">
+          <thead>
+            <tr>
+              <th class="cell-pl">PAGO</th>
+              <th class="text-center">TIPO</th>
+              <th class="text-center">VENCE</th>
+              <th class="text-right">TOTAL</th>
+              <th class="text-center">COMPROBANTE</th>
+              <th class="text-center">MÉTODO</th>
+              <th class="text-center cell-pr">ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="7" class="text-center text-muted">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+    <!-- =======================
+         RECURRENTES
+         ======================= -->
+    <section id="panelRecurrentes" class="is-hidden">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <div class="section-desc">Reglas de pagos recurrentes (Fijos y Variables).</div>
+        </div>
+        <div class="toolbar-right">
+          <button type="button" class="btn-secondary" id="btnGenerateRules">GENERAR PRÓX. 8 SEM / 6 MESES</button>
+          <button type="button" class="btn-primary" id="btnOpenRuleModal">NUEVA REGLA</button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="sku-table" id="rulesTable" aria-label="Reglas de pago">
+          <thead>
+            <tr>
+              <th class="cell-pl">REGLA</th>
+              <th class="text-center">TIPO</th>
+              <th class="text-right">MONTO</th>
+              <th class="text-center">PROVEEDOR</th>
+              <th class="text-center">ACTIVA</th>
+              <th class="text-center cell-pr">ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="6" class="text-center text-muted">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =======================
+         COSTOS DE APERTURA
+         ======================= -->
+    <section id="panelApertura" class="is-hidden">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <input id="openingSearch" class="search-input-admin" type="text" placeholder="Buscar costo..." />
+        </div>
+        <div class="toolbar-right">
+          <label class="toolbar-check-inline section-desc">
+            <input type="checkbox" id="openingShowInactive" />
+            Ver inactivos
+          </label>
+          <button type="button" class="btn-primary" id="btnNewOpeningDef">NUEVO COSTO</button>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <label class="input-label" for="openingPreviewPlanDate" style="margin:0">Fecha evento (preview)</label>
+          <input id="openingPreviewPlanDate" class="modal-input" type="date" style="max-width:220px; margin:0" />
+        </div>
+        <div class="toolbar-right">
+          <button type="button" class="btn-secondary" id="btnSyncOpeningForPreview">APLICAR A ESA FECHA</button>
+        </div>
+      </div>
+
+      <div id="openingStatus" class="status-line"></div>
+
+      <div class="table-container">
+        <table class="sku-table" id="openingDefsTable" aria-label="Costos de apertura">
+          <thead>
+            <tr>
+              <th class="cell-pl">COSTO</th>
+              <th class="text-center">MODO</th>
+              <th class="text-right">MONTO</th>
+              <th class="text-center">DÍAS ANTES</th>
+              <th class="text-center">VENCE</th>
+              <th class="text-center cell-pr">ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="6" class="text-center text-muted">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-container">
+        <table class="sku-table" aria-label="Atajo plan">
+          <thead>
+            <tr>
+              <th class="cell-pl">PLAN</th>
+              <th class="cell-pr"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="list-row">
+              <td class="cell-pl">
+                <div class="row-title">Planificar fecha</div>
+                <div class="row-sub-text">Los costos se generan al guardar el plan.</div>
+              </td>
+              <td class="cell-pr text-right">
+                <a class="btn-secondary" href="admin-plan.html" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center; padding:10px 14px;">IR A PLAN</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =======================
+         EXTRAS
+         ======================= -->
+    <section id="panelExtras" class="is-hidden">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <div class="section-desc">Pagos manuales (extras).</div>
+        </div>
+        <div class="toolbar-right">
+          <button type="button" class="btn-primary" id="btnNewExtra">NUEVA REGLA / EXTRA</button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="sku-table" id="extrasTable" aria-label="Pagos extras">
+          <thead>
+            <tr>
+              <th class="cell-pl">EXTRA</th>
+              <th class="text-center">VENCE</th>
+              <th class="text-right">TOTAL</th>
+              <th class="text-center">ESTADO</th>
+              <th class="text-center cell-pr">ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="5" class="text-center text-muted">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =======================
+         PEDIDOS (APROBADOS)
+         ======================= -->
+    <section id="panelPedidos" class="is-hidden">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <div class="section-desc">Solicitudes de compra aprobadas esperando recepción.</div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="sku-table" id="pedidosTable" aria-label="Pedidos aprobados">
+          <thead>
+            <tr>
+              <th class="cell-pl">PRODUCTO / SOLICITUD</th>
+              <th class="text-center">PACKS</th>
+              <th class="text-center">UNIDADES</th>
+              <th class="text-center cell-pr">ESTADO</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="4" class="text-center text-muted">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =======================
+         CONFIG
+         ======================= -->
+    <section id="panelConfig" class="is-hidden">
+      <div class="table-container">
+        <table class="sku-table" aria-label="Config acciones">
+          <thead>
+            <tr>
+              <th class="cell-pl">ACCIONES</th>
+              <th class="cell-pr"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="list-row">
+              <td class="cell-pl">
+                <div class="row-title">Generar pagos desde reglas</div>
+                <div class="row-sub-text">Crea/actualiza pagos RULE para próximas 8 semanas y 6 meses.</div>
+              </td>
+              <td class="cell-pr text-right">
+                <button type="button" class="btn-secondary" id="btnGenerateRulesAll">GENERAR TODO</button>
+              </td>
+            </tr>
+            <tr class="list-row">
+              <td class="cell-pl">
+                <div class="row-title">Actualizar calendario</div>
+                <div class="row-sub-text">Refresca el mes actual.</div>
+              </td>
+              <td class="cell-pr text-right">
+                <button type="button" class="btn-secondary" id="btnRefreshCalendar">ACTUALIZAR</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modals -->
+  <!-- (Modals condensed for brevity, keeping all functionality) -->
+  
+  <!-- MODAL REGLA -->
+  <div class="modal-overlay" id="ruleModal" style="display:none;">
+    <div class="modal-box">
+      <h2 class="modal-title-sm" id="ruleModalTitle">REGLA</h2>
+      <form id="ruleForm">
+        <input type="hidden" id="ruleId" />
+        <div>
+          <label class="input-label">Título</label>
+          <input id="ruleTitle" class="modal-input" type="text" required />
+        </div>
+        <div>
+          <label class="input-label">Tipo</label>
+          <select id="ruleType" class="modal-select">
+            <option value="WEEKLY">SEMANAL</option>
+            <option value="MONTHLY">MENSUAL</option>
+          </select>
+        </div>
+        <div id="weeklyWrap">
+          <label class="input-label">Día de semana</label>
+          <select id="ruleWeekday" class="modal-select">
+            <option value="0">LUNES</option>
+            <option value="1">MARTES</option>
+            <option value="2">MIÉRCOLES</option>
+            <option value="3">JUEVES</option>
+            <option value="4">VIERNES</option>
+            <option value="5">SÁBADO</option>
+            <option value="6">DOMINGO</option>
+          </select>
+        </div>
+        <div class="is-hidden" id="monthlyWrap">
+          <label class="input-label">Día del mes</label>
+          <input id="ruleDayOfMonth" class="modal-input" type="number" min="1" max="31" value="1" />
+        </div>
+        <div>
+          <label class="input-label">Proveedor</label>
+          <select id="ruleSupplier" class="modal-select"><option value="">—</option></select>
+        </div>
+        <div>
+          <label class="input-label">Modo</label>
+          <select id="ruleAmountMode" class="modal-select">
+            <option value="FIXED">FIJO</option>
+            <option value="VARIABLE">VARIABLE</option>
+          </select>
+        </div>
+        <div id="fixedAmountWrap">
+          <label class="input-label">Monto fijo</label>
+          <input id="ruleFixedAmount" class="modal-input" type="number" step="0.01" value="0" />
+        </div>
+        <div>
+          <label class="input-label">Activa</label>
+          <select id="ruleIsActive" class="modal-select">
+            <option value="true">SÍ</option>
+            <option value="false">NO</option>
+          </select>
+        </div>
+      </form>
+      <div class="modal-btns">
+        <button type="button" class="btn-danger is-hidden" id="btnDeleteRule">Eliminar</button>
+        <button type="button" class="btn-secondary" id="btnCloseRuleModal">Cancelar</button>
+        <button type="button" class="btn-primary" id="btnSaveRule">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL COSTO APERTURA -->
+  <div class="modal-overlay" id="openingModal" style="display:none;">
+    <div class="modal-box">
+      <h2 class="modal-title-sm">COSTO APERTURA</h2>
+      <form id="openingForm">
+        <input type="hidden" id="openingId" />
+        <div>
+          <label class="input-label">Título</label>
+          <input id="openingTitle" class="modal-input" type="text" required />
+        </div>
+        <div>
+          <label class="input-label">Proveedor</label>
+          <select id="openingSupplier" class="modal-select"><option value="">—</option></select>
+        </div>
+        <div>
+          <label class="input-label">Modo</label>
+          <select id="openingAmountMode" class="modal-select">
+            <option value="FIXED">FIJO</option>
+            <option value="VARIABLE">VARIABLE</option>
+          </select>
+        </div>
+        <div>
+          <label class="input-label">Monto default</label>
+          <input id="openingDefaultAmount" class="modal-input" type="number" step="0.01" value="0" />
+        </div>
+        <div>
+          <label class="input-label">Días antes del evento</label>
+          <input id="openingDueDays" class="modal-input" type="number" value="0" />
+        </div>
+        <div>
+          <label class="input-label">Orden</label>
+          <input id="openingSort" class="modal-input" type="number" value="100" />
+        </div>
+        <div>
+          <label class="toolbar-check-inline section-desc">
+            <input type="checkbox" id="openingIsActive" /> Activo
+          </label>
+        </div>
+      </form>
+      <div class="modal-btns">
+        <button type="button" class="btn-danger is-hidden" id="btnDeleteOpening">Eliminar</button>
+        <button type="button" class="btn-secondary" id="btnCloseOpeningModal">Cancelar</button>
+        <button type="button" class="btn-primary" id="btnSaveOpening">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL EXTRA -->
+  <div class="modal-overlay" id="extraModal" style="display:none;">
+    <div class="modal-box">
+      <h2 class="modal-title-sm">EXTRA</h2>
+      <form id="extraForm">
+        <input type="hidden" id="extraId" />
+        <div>
+          <label class="input-label">Título</label>
+          <input id="extraTitle" class="modal-input" type="text" required />
+        </div>
+        <div>
+          <label class="input-label">Proveedor</label>
+          <select id="extraSupplier" class="modal-select"><option value="">—</option></select>
+        </div>
+        <div>
+          <label class="input-label">Vence</label>
+          <input id="extraDueDate" class="modal-input" type="date" required />
+        </div>
+        <div>
+          <label class="input-label">Monto</label>
+          <input id="extraAmount" class="modal-input" type="number" step="0.01" value="0" required />
+        </div>
+        <div>
+          <label class="input-label">Estado</label>
+          <select id="extraStatus" class="modal-select">
+            <option value="PENDING">PENDIENTE</option>
+            <option value="DONE">REALIZADO</option>
+          </select>
+        </div>
+      </form>
+      <div class="modal-btns">
+        <button type="button" class="btn-danger is-hidden" id="btnDeleteExtra">Eliminar</button>
+        <button type="button" class="btn-secondary" id="btnCloseExtraModal">Cancelar</button>
+        <button type="button" class="btn-primary" id="btnSaveExtra">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CONFIRMAR PAGO -->
+  <div class="modal-overlay" id="payModal" style="display:none;">
+    <div class="modal-box">
+      <h2 class="modal-title-sm">CONFIRMAR PAGO</h2>
+      <input type="hidden" id="payPaymentId" />
+      <div>
+        <div class="row-title" id="payTitle">—</div>
+        <div class="row-sub-text" id="payDue">—</div>
+      </div>
+      <div style="margin-top:24px;">
+        <label class="input-label">Monto a pagar</label>
+        <input id="payAmount" class="modal-input" type="number" step="0.01" value="0" required />
+      </div>
+      <div>
+        <label class="input-label">Tipo de comprobante</label>
+        <select id="payVoucher" class="modal-select" required>
+          <option value="">—</option>
+          <option value="Factura A">Factura A</option>
+          <option value="Factura C">Factura C</option>
+          <option value="Recibo">Recibo</option>
+          <option value="Comprobante">Comprobante</option>
+          <option value="Sin Comprobante">Sin Comprobante</option>
+        </select>
+      </div>
+      <div>
+        <label class="input-label">Método de pago</label>
+        <select id="payMethod" class="modal-select" required>
+          <option value="">—</option>
+          <option value="Efectivo">Efectivo</option>
+          <option value="Transferencia">Transferencia</option>
+          <option value="Crédito">Crédito</option>
+          <option value="Débito">Débito</option>
+        </select>
+      </div>
+      <div>
+        <label class="input-label">Nota</label>
+        <input id="payNote" class="modal-input" type="text" placeholder="Ej: referencia..." />
+      </div>
+      <div class="modal-btns">
+        <button type="button" class="btn-secondary" id="btnClosePayModal">Cancelar</button>
+        <button type="button" class="btn-primary" id="btnConfirmPay">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="notif-muted is-hidden" style="position:fixed; left:16px; right:16px; bottom:16px; z-index:1100; background:rgba(15,15,15,0.9); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,.08); padding:12px 16px; border-radius:16px; display:flex; gap:12px; align-items:center; justify-content:space-between;">
+    <div id="toastMsg">—</div>
+    <div style="display:flex; gap:8px;">
+      <button type="button" class="btn-secondary btn-xs" id="toastUndoBtn">DESHACER</button>
+      <button type="button" class="btn-secondary btn-xs" id="toastCloseBtn">CERRAR</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="../../config/config.js"></script>
+  <script src="../../js/pages/admin-pagos.js"></script>
+</body>
+</html>

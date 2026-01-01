@@ -1,0 +1,246 @@
+<!-- /pages/master/master-analisis.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midnight — Análisis</title>
+  <meta name="theme-color" content="#0B0C0D" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../../css/main.css" />
+  <!-- Nota: master-analisis.css se agregará cuando esté disponible -->
+  <link rel="stylesheet" href="../../css/pages/master-analisis.css" />
+</head>
+
+<body>
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-top">
+        <div>
+          <button type="button" class="btn-secondary btn-back" id="btnBack">VOLVER</button>
+        </div>
+
+        <div class="admin-logo">ANÁLISIS</div>
+
+        <div class="admin-header-right">
+          <span class="session-chip">Master Data</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-container">
+
+    <!-- Tabs -->
+    <nav class="tab-nav" id="tabsNav" aria-label="Secciones">
+      <button type="button" class="tab-btn active" id="tabBtnImports" data-tab="imports">IMPORT</button>
+      <button type="button" class="tab-btn" id="tabBtnStock" data-tab="stock">STOCK IDEAL</button>
+    </nav>
+
+    <!-- =========================
+         TAB: IMPORT
+    ========================== -->
+    <section id="panelImports" class="tab-panel">
+      <div class="analysis-steps" aria-label="Pasos de importación">
+        <div class="step-chip" id="step1">
+          <span class="step-num">1</span>
+          <span class="step-label">Crear import</span>
+        </div>
+        <div class="step-chip" id="step2">
+          <span class="step-num">2</span>
+          <span class="step-label">Subir consumo</span>
+        </div>
+        <div class="step-chip" id="step3">
+          <span class="step-num">3</span>
+          <span class="step-label">Subir recaudación</span>
+        </div>
+        <div class="step-chip" id="step4">
+          <span class="step-num">4</span>
+          <span class="step-label">Finalizar</span>
+        </div>
+      </div>
+
+      <div class="toolbar analysis-toolbar">
+        <div class="toolbar-left">
+          <input id="importLabel" class="search-input-admin input-sm" type="text" placeholder="ETIQUETA (EJ: 20_12)" />
+          <button class="btn-soft" type="button" id="btnNewImport">NUEVO IMPORT</button>
+        </div>
+
+        <div class="toolbar-right">
+          <input type="file" id="fileConsumo" accept=".xlsx,.xls" hidden />
+          <input type="file" id="fileRecaud" accept=".xlsx,.xls" hidden />
+
+          <button class="btn-secondary" type="button" id="btnUploadConsumo">SUBIR CONSUMO</button>
+          <button class="btn-secondary" type="button" id="btnUploadRecaud">SUBIR RECAUDACIÓN</button>
+
+          <button class="btn-primary" type="button" id="btnFinalize">FINALIZAR</button>
+        </div>
+      </div>
+
+      <div id="statusLineImports" class="status-line"></div>
+
+      <div class="box-soft analysis-current" id="currentBox" hidden>
+        <div class="details-grid analysis-details-grid">
+          <div class="kv">
+            <div class="k">Import actual</div>
+            <div class="v" id="curImportId">-</div>
+          </div>
+          <div class="kv">
+            <div class="k">Etiqueta</div>
+            <div class="v" id="curImportLabel">-</div>
+          </div>
+          <div class="kv">
+            <div class="k">Consumo</div>
+            <div class="v" id="curHasConsumo">-</div>
+          </div>
+          <div class="kv">
+            <div class="k">Recaudación</div>
+            <div class="v" id="curHasRecaud">-</div>
+          </div>
+        </div>
+
+        <div class="analysis-current-actions">
+          <div class="left">
+            <span class="tag tag-gray" id="curStatusTag">DRAFT</span>
+            <p class="analysis-tip">Si el archivo ya fue subido antes, se rechaza por duplicado.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="sku-table" id="importsTable">
+          <thead>
+            <tr>
+              <th class="cell-pl">FECHA</th>
+              <th>ETIQUETA</th>
+              <th>ESTADO</th>
+              <th>CONSUMO</th>
+              <th>RECAUDACIÓN</th>
+              <th class="text-right cell-pr">ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="6" class="text-center text-muted table-loading">Cargando imports...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =========================
+         TAB: STOCK IDEAL
+    ========================== -->
+    <section id="panelStock" class="tab-panel" hidden>
+      <section class="section-header">
+        <h1 class="section-title">STOCK IDEAL</h1>
+        <p class="section-desc">
+          Calcula <b>D</b> = stock necesario por noche a partir de imports <b>READY</b>.
+          Luego escribe <b>stock_ideal = D</b> en <b>inventory_stock</b>.
+        </p>
+      </section>
+
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <button class="btn-soft" type="button" id="btnSelectLast1">ÚLTIMO 1</button>
+          <button class="btn-soft" type="button" id="btnSelectLast3">ÚLTIMOS 3</button>
+          <button class="btn-soft" type="button" id="btnSelectLast5">ÚLTIMOS 5</button>
+          <button class="btn-soft" type="button" id="btnClearSelection">LIMPIAR</button>
+        </div>
+        <div class="toolbar-right">
+          <label class="inline-check">
+            <input type="checkbox" id="chkIncludeZero" />
+            <span>INCLUIR SIN CONSUMO (D=0)</span>
+          </label>
+          <button class="btn-secondary" type="button" id="btnCalcAll">CALCULAR</button>
+          <button class="btn-primary" type="button" id="btnSendStockIdeal" disabled>ENVIAR A STOCK</button>
+        </div>
+      </div>
+
+      <div id="statusLineStock" class="status-line"></div>
+
+      <div class="box-soft" id="stockSummaryBox">
+        <div class="details-grid analysis-details-grid">
+          <div class="kv">
+            <div class="k">Imports READY seleccionados</div>
+            <div class="v" id="sumSelectedImports">0</div>
+          </div>
+          <div class="kv">
+            <div class="k">Noches válidas</div>
+            <div class="v" id="sumValidNights">0</div>
+          </div>
+          <div class="kv">
+            <div class="k">Filas CONSUMO</div>
+            <div class="v" id="sumRowsRead">0</div>
+          </div>
+          <div class="kv">
+            <div class="k">No mapeados</div>
+            <div class="v" id="sumUnmapped">0</div>
+          </div>
+          <div class="kv">
+            <div class="k">SKUs calculados</div>
+            <div class="v" id="sumSkusComputed">0</div>
+          </div>
+          <div class="kv">
+            <div class="k">SKUs totales</div>
+            <div class="v" id="sumSkusTotal">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="sku-table" id="readyImportsTable">
+          <thead>
+            <tr>
+              <th class="cell-pl">SEL</th>
+              <th>FECHA</th>
+              <th>ETIQUETA</th>
+              <th>IMPORT ID</th>
+              <th>CONSUMO</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="5" class="text-center text-muted table-loading">Cargando imports READY...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <input id="resultsFilter" class="search-input-admin" type="text" placeholder="FILTRAR SKU O CÓDIGO..." />
+        </div>
+        <div class="toolbar-right">
+          <button class="btn-soft" type="button" id="btnPrevPage">ANTERIOR</button>
+          <span class="tag tag-gray" id="pageInfo">0/0</span>
+          <button class="btn-soft" type="button" id="btnNextPage">SIGUIENTE</button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="sku-table" id="resultsTable">
+          <thead>
+            <tr>
+              <th class="cell-pl">SKU</th>
+              <th>CÓDIGO</th>
+              <th class="text-right">TOTAL</th>
+              <th class="text-right">D (X NOCHE)</th>
+              <th class="text-right">IDEAL ACTUAL</th>
+              <th class="text-right cell-pr">NUEVO (D)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="6" class="text-center text-muted">Calculá para ver resultados.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <script src="../../config/config.js"></script>
+  <script src="../../js/pages/master-analisis.js"></script>
+</body>
+</html>

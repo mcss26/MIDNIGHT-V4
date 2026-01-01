@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midnight — Admin Pedidos</title>
+  <meta name="theme-color" content="#0B0C0D" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="../../css/main.css" />
+  <!-- Page Specific -->
+  <link rel="stylesheet" href="../../css/pages/admin-stock-pedido.css" />
+</head>
+
+<body>
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-top">
+        <div>
+          <button type="button" class="btn-secondary btn-back" id="btnBack">VOLVER</button>
+        </div>
+
+        <div class="admin-logo">SOLICITUDES</div>
+
+        <div class="admin-header-right">
+          <span class="session-chip">Admin</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <nav class="tab-nav" id="mainTabs" aria-label="Admin pedidos tabs">
+      <button type="button" class="tab-btn active" data-tab="SOLICITUDES" id="tabSolicitudes">SOLICITUDES</button>
+      <button type="button" class="tab-btn" data-tab="PENDIENTES" id="tabPendientes">PENDIENTES</button>
+    </nav>
+
+    <div class="page-meta" aria-label="Estado">
+      <div class="hint" id="statusLine"></div>
+      <div class="count" id="countLine"></div>
+    </div>
+
+    <!-- SOLICITUDES -->
+    <section id="panelSolicitudes">
+      <div class="table-container">
+        <table class="sku-table" id="reqTable" aria-label="Solicitudes de pedido">
+          <thead>
+            <tr>
+              <th class="cell-pl">NOMBRE</th>
+              <th class="text-center">ACTUAL</th>
+              <th class="text-center">IDEAL</th>
+              <th class="text-center">DIF</th>
+              <th class="text-center">PACKS</th>
+              <th class="text-right">COSTO</th>
+              <th class="text-center">PROYECTADO</th>
+              <th class="text-center cell-pr">ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="8" class="text-center text-muted">Cargando solicitudes...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PENDIENTES -->
+    <section id="panelPendientes" class="is-hidden">
+      <div class="table-container">
+        <table class="sku-table" id="pendingTable" aria-label="Pendientes de reposición">
+          <thead>
+            <tr>
+              <th class="cell-pl">PEDIDO</th>
+              <th class="text-center">ESTADO</th>
+              <th class="text-center">REPOSICIÓN</th>
+              <th class="text-right">COSTO</th>
+              <th class="text-center cell-pr">CREADO</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="4" class="text-center text-muted">Cargando pendientes...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="../../config/config.js"></script>
+  <script src="../../js/pages/admin-stock-pedido.js"></script>
+</body>
+</html>

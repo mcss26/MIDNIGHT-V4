@@ -1,0 +1,186 @@
+<!-- /pages/master/master-recetas.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midnight — Recetas</title>
+  <meta name="theme-color" content="#0B0C0D" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../../css/main.css" />
+  <!-- Nota: recetas.css se agregará cuando esté disponible -->
+  <link rel="stylesheet" href="../../css/pages/recetas.css" />
+</head>
+
+<body>
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-top">
+        <div>
+          <button type="button" class="btn-secondary btn-back" id="btnBack">VOLVER</button>
+        </div>
+
+        <div class="admin-logo">RECETAS</div>
+
+        <div class="admin-header-right">
+          <span class="session-chip">Master Data</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <div id="statusLine" class="status-line"></div>
+
+    <div class="recipes-layout">
+      <!-- PANEL IZQUIERDO -->
+      <aside class="recipes-list-panel" aria-label="Lista de productos">
+        <div class="recipes-list-header">
+          <div class="recipes-list-actions">
+            <button id="btnNewItem" class="btn-primary" type="button">+ NUEVO</button>
+          </div>
+
+          <input id="searchMenu" class="search-input-admin" type="text" placeholder="Buscar producto..." autocomplete="off" />
+
+          <div class="recipes-list-meta">
+            <span id="countMenu" class="tag tag-gray">0 items</span>
+            <span class="recipes-glass-hint">VASO: 400ml</span>
+          </div>
+        </div>
+
+        <div id="menuList" class="menu-list-scroll"></div>
+      </aside>
+
+      <!-- PANEL DERECHO -->
+      <section class="recipes-details-panel" aria-label="Detalle de receta">
+        <div id="emptyState" class="recipes-empty">
+          <div class="recipes-empty-icon">📋</div>
+          <div class="recipes-empty-text">Seleccioná un producto para ver su ficha técnica.</div>
+        </div>
+
+        <div id="recipePanel" class="is-hidden">
+          <input type="hidden" id="currentItemId">
+
+          <div class="recipe-topbar">
+            <div class="recipe-topbar-left">
+              <h2 id="viewName" class="recipe-name">—</h2>
+              <div id="viewMeta" class="recipe-meta">—</div>
+            </div>
+
+            <div class="recipe-topbar-right">
+              <span id="pillRecipeState" class="tag tag-gray">SIN RECETA</span>
+              <span id="pillActive" class="tag tag-gray">—</span>
+
+              <button id="btnEditItem" class="btn-secondary" type="button">EDITAR</button>
+              <button id="btnToggleItem" class="btn-secondary" type="button">INACTIVAR</button>
+            </div>
+          </div>
+
+          <div class="recipe-body">
+            <div class="box-soft">
+              <div class="recipe-price-row">
+                <div class="recipe-price-input">
+                  <label class="input-label" for="viewPrice">PRECIO VENTA ($)</label>
+                  <input type="number" id="viewPrice" class="modal-input" min="0" step="1" placeholder="0">
+                </div>
+                <div id="saveStatus" class="inline-status">—</div>
+              </div>
+
+              <div class="kpi-grid">
+                <div class="kpi-card">
+                  <div class="input-label">COSTO</div>
+                  <div id="kpiCost" class="kpi-value">$0</div>
+                </div>
+                <div class="kpi-card">
+                  <div class="input-label">COSTO %</div>
+                  <div id="kpiCostPct" class="kpi-value">0%</div>
+                </div>
+                <div class="kpi-card">
+                  <div class="input-label">MARGEN $</div>
+                  <div id="kpiMargin" class="kpi-value">$0</div>
+                </div>
+                <div class="kpi-card">
+                  <div class="input-label">MARGEN %</div>
+                  <div id="kpiMarginPct" class="kpi-value">0%</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="box-soft">
+              <div class="volume-head">
+                <span class="volume-label">VOLUMEN ESTIMADO (Target: 400ml)</span>
+                <span id="volText" class="volume-value">0 ml</span>
+              </div>
+              <div class="progress-track" aria-label="Volumen">
+                <div id="volFill" class="progress-fill"></div>
+              </div>
+            </div>
+
+            <div class="ing-head">
+              <label class="input-label ing-title">INGREDIENTES</label>
+              <span id="ingCount" class="tag tag-gray ing-count">0 insumos</span>
+            </div>
+
+            <div class="table-container">
+              <table class="sku-table" aria-label="Ingredientes">
+                <thead>
+                  <tr>
+                    <th class="cell-pl">INSUMO</th>
+                    <th class="text-center">TIPO</th>
+                    <th class="text-right">BASE</th>
+                    <th class="text-center col-qty">CANT</th>
+                    <th class="text-center col-unit">UNID</th>
+                    <th class="text-right">COSTO</th>
+                    <th class="text-center cell-pr col-del">—</th>
+                  </tr>
+                </thead>
+                <tbody id="ingTableBody">
+                  <tr><td colspan="7" class="text-center text-muted">Seleccioná un producto.</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="box-soft add-ing-box">
+              <div class="add-ing-grid">
+                <div class="add-ing-field">
+                  <label class="input-label" for="skuFilter">BUSCAR INSUMO</label>
+                  <input id="skuFilter" class="modal-input" placeholder="Filtrar..." autocomplete="off" />
+                </div>
+
+                <div class="add-ing-field add-ing-select">
+                  <label class="input-label" for="selSku">SELECCIONAR</label>
+                  <select id="selSku" class="modal-select"></select>
+                </div>
+
+                <div class="add-ing-field add-ing-qty">
+                  <label class="input-label" for="newQty">CANTIDAD</label>
+                  <input type="number" id="newQty" class="modal-input" placeholder="0" min="0" step="0.01">
+                </div>
+
+                <div class="add-ing-field add-ing-unit">
+                  <label class="input-label" for="newUnit">UNIDAD</label>
+                  <select id="newUnit" class="modal-select">
+                    <option value="ml">ml</option>
+                    <option value="un">un</option>
+                  </select>
+                </div>
+
+                <button id="btnAddIng" class="btn-primary add-ing-btn" type="button">AGREGAR</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../../config/config.js"></script>
+  <script src="../../js/pages/master-recetas.js"></script>
+</body>
+</html>

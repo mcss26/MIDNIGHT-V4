@@ -1,0 +1,50 @@
+:root {
+  /* Colores */
+  --bg-body: #0B0C0D;
+  --bg-card: #111217;
+  --bg-input: #05070B;
+  --bg-hover: rgba(255, 255, 255, 0.04);
+
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-light: rgba(255, 255, 255, 0.15);
+
+  --text-primary: #F5F7FA;
+  --text-secondary: #9CA3B4;
+  --text-tertiary: #6B7280;
+
+  --accent-red: #FF0A1E;
+  --accent-green: #CCFF00;
+  --accent-blue: #38BDF8;
+  --accent-gold: #FACC15;
+  --accent-purple: #C084FC;
+
+  --state-error: var(--accent-red);
+  --state-success: var(--accent-green);
+  --state-warn: var(--accent-gold);
+  --state-info: var(--accent-blue);
+
+  /* Tipografía */
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Outfit', system-ui, -apple-system, sans-serif;
+
+  /* Radios / sombras */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 18px 40px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 20px rgba(255, 10, 30, 0.15);
+
+  /* Capas */
+  --z-back: -1;
+  --z-normal: 1;
+  --z-sticky: 100;
+  --z-dropdown: 200;
+  --z-modal: 1000;
+  --z-toast: 2000;
+
+  /* Layout */
+  --max-width-container: 1200px;
+  --header-height: 60px;
+}

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midnight — Maestro SKUs</title>
+  <meta name="theme-color" content="#0B0C0D" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../../css/main.css" />
+
+  <style>
+    /* Detalle desplegable (mínimo, sin tocar global/listas) */
+    .details-wrap{ display:flex; flex-direction:column; gap:12px; padding:12px 2px; }
+    .details-grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(160px, 1fr));
+      gap:10px;
+    }
+    .kv{ padding:10px 12px; border:1px solid var(--border-subtle); border-radius:12px; background:rgba(255,255,255,0.02); }
+    .kv .k{ font-size:10px; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-secondary); font-weight:800; margin-bottom:6px; }
+    .kv .v{ font-size:13px; color:var(--text-primary); font-weight:700; }
+    .details-actions{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+    .details-actions .left{ display:flex; align-items:center; gap:10px; }
+    tr.list-row{ cursor:pointer; }
+    tr.list-row.is-selected{ background: rgba(255,255,255,0.03); }
+    tr.details-row td{ background: rgba(255,255,255,0.01); }
+    @media (max-width: 900px){
+      .details-grid{ grid-template-columns:repeat(2, minmax(160px, 1fr)); }
+    }
+    @media (max-width: 520px){
+      .details-grid{ grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-top">
+        <div>
+          <button type="button" class="btn-secondary btn-back" id="btnBack">VOLVER</button>
+        </div>
+
+        <div class="admin-logo">MAESTRO SKUS</div>
+
+        <div class="admin-header-right">
+          <span class="session-chip">Master Data</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <input
+          id="searchSkus"
+          class="search-input-admin"
+          type="text"
+          placeholder="Buscar por nombre o código..."
+          autocomplete="off"
+        />
+
+        <label class="toolbar-check section-desc" style="font-size:11px;">
+          <input type="checkbox" id="showInactive" style="margin:0;" />
+          Ver inactivos
+        </label>
+      </div>
+
+      <div class="toolbar-right">
+        <button class="btn-primary" type="button" id="newSkuBtn">Nuevo SKU</button>
+      </div>
+    </div>
+
+    <nav class="tab-nav" id="categoryTabs" aria-label="Categorías">
+      <button type="button" class="tab-btn active" data-cat="ALL">TODOS</button>
+      <button type="button" class="tab-btn" data-cat="BEBIDAS">BEBIDAS</button>
+      <button type="button" class="tab-btn" data-cat="INSUMOS BARRA">INSUMOS BARRA</button>
+      <button type="button" class="tab-btn" data-cat="LIMPIEZA">LIMPIEZA</button>
+      <button type="button" class="tab-btn" data-cat="LIBRERIA">LIBRERIA</button>
+      <button type="button" class="tab-btn" data-cat="MANTENIMIENTO">MANTENIMIENTO</button>
+      <button type="button" class="tab-btn" data-cat="OTROS">OTROS</button>
+    </nav>
+
+    <div id="skusStatus" class="status-line"></div>
+
+    <div class="table-container">
+      <table class="sku-table" id="skuTable" aria-label="Listado de SKUs">
+        <thead>
+          <tr>
+            <th class="cell-pl">NOMBRE</th>
+            <th class="text-center">STOCK IDEAL</th>
+            <th class="text-center">UNID. PACK</th>
+            <th class="text-right">COSTO UN.</th>
+            <th class="text-right cell-pr">COSTO PACK</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="5" class="text-center text-muted" style="padding:40px;">
+              Cargando inventario...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- MODAL SKU -->
+  <div class="modal-overlay" id="skuModal" aria-hidden="true" style="display: none;">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-label="SKU">
+      <h2 class="section-title modal-title-sm" id="modalTitle" style="text-align:left;">SKU</h2>
+      <p class="section-desc modal-desc-sm" id="modalSubtitle" style="text-align:left;">Crear o editar SKU.</p>
+
+      <form id="skuForm">
+        <input type="hidden" id="skuId" />
+
+        <div class="mt-2">
+          <label class="input-label" for="skuName">Nombre</label>
+          <input id="skuName" class="modal-input" type="text" required placeholder="Ej: VODKA ABSOLUT 750ML" />
+        </div>
+
+        <div class="mt-2">
+          <label class="input-label" for="skuExternalId">Código externo</label>
+          <input id="skuExternalId" class="modal-input" type="text" placeholder="Ej: 7791234..." />
+        </div>
+
+        <div class="mt-2">
+          <label class="input-label" for="skuCategory">Categoría</label>
+          <select id="skuCategory" class="modal-select">
+            <option value="">Sin definir</option>
+            <option value="BEBIDAS">BEBIDAS</option>
+            <option value="INSUMOS BARRA">INSUMOS BARRA</option>
+            <option value="LIMPIEZA">LIMPIEZA</option>
+            <option value="LIBRERIA">LIBRERIA</option>
+            <option value="MANTENIMIENTO">MANTENIMIENTO</option>
+            <option value="OTROS">OTROS</option>
+          </select>
+        </div>
+
+        <div class="mt-2">
+          <label class="input-label" for="skuUnitType">Unidad base</label>
+          <select id="skuUnitType" class="modal-select">
+            <option value="">Sin definir</option>
+            <option value="BOTELLA">BOTELLA</option>
+            <option value="LATA">LATA</option>
+            <option value="UNIDAD">UNIDAD</option>
+          </select>
+        </div>
+
+        <div class="mt-2">
+          <label class="input-label" for="skuVolume">Volumen por unidad (ml)</label>
+          <input id="skuVolume" class="modal-input" type="number" min="0" step="1" placeholder="Ej: 750" />
+        </div>
+
+        <div class="mt-2">
+          <label class="input-label" for="skuPreferredSupplier">Proveedor</label>
+          <select id="skuPreferredSupplier" class="modal-select">
+            <option value="">Sin asignar</option>
+          </select>
+        </div>
+
+        <div class="mt-2">
+          <label class="input-label" for="skuStockIdeal">Stock ideal</label>
+          <input id="skuStockIdeal" class="modal-input" type="number" step="0.01" min="0" placeholder="0" />
+        </div>
+
+        <div class="mt-2">
+          <label class="input-label" for="skuPackSize">Unidades por pack</label>
+          <input id="skuPackSize" class="modal-input" type="number" step="1" min="1" placeholder="Ej: 6 / 12 / 24" />
+        </div>
+
+        <div class="mt-2">
+          <label class="input-label" for="skuStockIdeal">Costo unidad</label>
+          <input id="skuCostUnit" class="modal-input" type="number" step="0.01" min="0" placeholder="0.00" />
+        </div>
+
+        <div class="mt-2">
+          <label class="input-label" for="skuStockIdeal">Costo pack (opcional)</label>
+          <input id="skuCostPack" class="modal-input" type="number" step="0.01" min="0" placeholder="Si lo dejás vacío, se calcula" />
+          <p class="text-muted" style="margin-top:8px;">
+            Si está vacío y hay pack_size + costo unidad, se calcula automáticamente.
+          </p>
+        </div>
+
+        <div class="mt-2" style="display:flex; align-items:center; gap:8px;">
+          <label class="section-desc" style="margin:0; font-size:11px; display:flex; align-items:center; gap:6px;">
+            <input type="checkbox" id="skuIsActive" style="margin:0;" />
+            SKU activo
+          </label>
+        </div>
+      </form>
+
+      <div class="modal-btns">
+        <button type="button" class="btn-danger" id="toggleActiveBtn" style="margin-right:auto; display:none;">
+          Inactivar
+        </button>
+        <button type="button" class="btn-secondary" id="cancelModalBtn">Cancelar</button>
+        <button type="button" class="btn-primary" id="saveSkuBtn">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../../config/config.js"></script>
+  <script src="../../js/pages/master-sku.js"></script>
+</body>
+</html>

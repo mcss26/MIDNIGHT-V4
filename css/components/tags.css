@@ -1,0 +1,17 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.tag-green { background: rgba(204, 255, 0, 0.15); color: var(--state-success); }
+.tag-red   { background: rgba(255, 10, 30, 0.15); color: var(--state-error); }
+.tag-blue  { background: rgba(56, 189, 248, 0.15); color: var(--state-info); }
+.tag-gold  { background: rgba(250, 204, 21, 0.15); color: var(--state-warn); }
+.tag-gray  { background: rgba(255, 255, 255, 0.1); color: var(--text-secondary); }

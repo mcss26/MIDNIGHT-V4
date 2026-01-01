@@ -1,0 +1,189 @@
+/* CSS for QR Scanner Module */
+
+/* Section Layout */
+.scanner-section {
+    width: 100%;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.scanner-box {
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 1;
+    background: #000;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--border-subtle);
+}
+
+/* Overlay & Focus Box */
+.scanner-overlay {
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.focus-box {
+    width: 70%;
+    height: 70%;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    box-shadow: 0 0 0 400px rgba(0, 0, 0, 0.5); /* Dim surroundings */
+    position: relative;
+}
+
+.focus-box::after {
+    content: '';
+    position: absolute;
+    top: -2px; left: -2px; right: -2px; bottom: -2px;
+    border: 2px solid var(--primary);
+    border-radius: 12px;
+    border-style: dashed;
+    animation: pulseBorder 2s infinite;
+}
+
+@keyframes pulseBorder {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
+/* Status Cards */
+.status-section {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 24px;
+}
+
+.status-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.status-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--surface-hover);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.status-details h3 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.status-details p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* Status Variants */
+.status-card.idle .status-icon::before { content: '📷'; }
+.status-card.idle { border-color: var(--border-subtle); }
+
+.status-card.success { 
+    background: rgba(34, 197, 94, 0.1); 
+    border-color: rgba(34, 197, 94, 0.3);
+}
+.status-card.success .status-icon {
+    background: #22c55e;
+    color: #fff;
+}
+.status-card.success .status-icon::before { content: '✓'; }
+.status-card.success h3 { color: #22c55e; }
+
+.status-card.error { 
+    background: rgba(239, 68, 68, 0.1); 
+    border-color: rgba(239, 68, 68, 0.3);
+}
+.status-card.error .status-icon {
+    background: #ef4444;
+    color: #fff;
+}
+.status-card.error .status-icon::before { content: '✕'; }
+.status-card.error h3 { color: #ef4444; }
+
+/* Manual Input Section */
+.manual-section {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 32px;
+}
+#manualInputBox.hidden { display: none; }
+#manualInputBox {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+}
+#manualInputBox input {
+    flex: 1;
+    background: var(--surface-hover);
+    border: 1px solid var(--border-subtle);
+    color: white;
+    padding: 0 12px;
+    border-radius: var(--radius-sm);
+}
+
+/* History List */
+.history-section {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+}
+.h-info {
+    display: flex;
+    flex-direction: column;
+}
+.h-code {
+    font-family: monospace;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+.h-time {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+.h-status {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+.h-status.ok { color: #22c55e; background: rgba(34, 197, 94, 0.1); }
+.h-status.no { color: #ef4444; background: rgba(239, 68, 68, 0.1); }

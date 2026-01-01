@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Midnight — Portal</title>
+    <meta name="theme-color" content="#0B0C0D" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap"
+        rel="stylesheet" />
+
+    <link rel="stylesheet" href="../css/main.css" />
+</head>
+
+<body>
+    <header class="admin-header">
+        <div class="admin-header-inner">
+            <div class="admin-header-top">
+                <div>
+                    <button type="button" class="btn-secondary btn-back" id="btnBack">VOLVER</button>
+                </div>
+
+                <div class="admin-logo">PORTAL</div>
+
+                <div class="admin-header-right">
+                    <span class="session-chip">Midnight</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-container">
+        <!-- BOTONES -->
+        <div class="access-group">
+            <div class="dash-grid" aria-label="Portal">
+
+                <a class="dash-card dash-card-staff" href="./staff/staff-index.html" aria-label="Ir a Staff">
+                    <div class="dash-card-inner">
+                        <div class="dash-title">STAFF</div>
+                        <p class="dash-card-label">Gestionar roles y permisos</p>
+                    </div>
+                </a>
+
+                <a class="dash-card dash-card-enc" href="./encargados/encargados-index.html" aria-label="Ir a Encargados">
+                    <div class="dash-card-inner">
+                        <div class="dash-title">ENCARGADOS</div>
+                        <p class="dash-card-label">Panel de supervisión</p>
+                    </div>
+                </a>
+
+                <a class="dash-card dash-card-op" href="./logistica/logistica-index.html" aria-label="Ir a Logística">
+                    <div class="dash-card-inner">
+                        <div class="dash-title">LOGÍSTICA</div>
+                        <p class="dash-card-label">Control de envíos y rutas</p>
+                    </div>
+                </a>
+
+                <a class="dash-card dash-card-op" href="./operativo/operativo-index.html" aria-label="Ir a Operativo">
+                    <div class="dash-card-inner">
+                        <div class="dash-title">OPERATIVO</div>
+                        <p class="dash-card-label">Gestión integrada de stock</p>
+                    </div>
+                </a>
+
+                <a class="dash-card dash-card-admin" href="./administracion/admin-index.html" aria-label="Ir a Administración">
+                    <div class="dash-card-inner">
+                        <div class="dash-title">ADMINISTRACIÓN</div>
+                        <p class="dash-card-label">Finanzas y pagos centralizados</p>
+                    </div>
+                </a>
+
+                <a class="dash-card dash-card-master" href="./master/master-index.html" aria-label="Ir a Master Data">
+                    <div class="dash-card-inner">
+                        <div class="dash-title">MASTER DATA</div>
+                        <p class="dash-card-label">Configuración y maestros globales</p>
+                    </div>
+                </a>
+
+                <a class="dash-card dash-card-gerencia" href="./contable/contable-index.html" aria-label="Ir a Contable">
+                    <div class="dash-card-inner">
+                        <div class="dash-title">CONTABLE</div>
+                        <p class="dash-card-label">Reportes contables e impuestos</p>
+                    </div>
+                </a>
+<a class="dash-card dash-card-qr" href="./qr/qr-index.html" aria-label="Ir a QR Modules">
+    <div class="dash-card-inner">
+        <div class="dash-title">QR MODULES</div>
+        <p class="dash-card-label">Generar, escanear y contar accesos QR</p>
+    </div>
+</a>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/pages/index.js"></script>
+</body>
+</html>

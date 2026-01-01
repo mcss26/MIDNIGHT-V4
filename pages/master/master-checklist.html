@@ -1,0 +1,135 @@
+<!-- /pages/master/master-checklist.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midnight — Checklist</title>
+  <meta name="theme-color" content="#0B0C0D" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/pages/master-checklist.css" />
+</head>
+
+<body>
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-top">
+        <div>
+          <button type="button" class="btn-secondary btn-back" id="btnBack">VOLVER</button>
+        </div>
+
+        <div class="admin-logo">CHECKLIST</div>
+
+        <div class="admin-header-right">
+          <span class="session-chip">Master Data</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <input
+          id="searchInput"
+          class="search-input-admin"
+          type="text"
+          placeholder="Buscar por título o descripción..."
+        />
+      </div>
+
+      <div class="toolbar-right">
+        <label class="toolbar-check-inline section-desc">
+          <input type="checkbox" id="showInactive" />
+          Ver inactivos
+        </label>
+
+        <button class="btn-primary" type="button" id="btnNew">Nuevo ítem</button>
+      </div>
+    </div>
+
+    <nav class="tab-nav" id="scopeTabs" aria-label="Scope">
+      <button type="button" class="tab-btn active" data-scope="ALL">TODOS</button>
+      <button type="button" class="tab-btn" data-scope="OPERATIVO">OPERATIVO</button>
+      <button type="button" class="tab-btn" data-scope="ADMIN">ADMIN</button>
+    </nav>
+
+    <div id="statusLine" class="status-line"></div>
+
+    <div class="table-container">
+      <table class="sku-table" aria-label="Checklist definitions">
+        <thead>
+          <tr>
+            <th class="text-center cell-pl" style="width: 80px;">ORDEN</th>
+            <th>TÍTULO</th>
+            <th class="text-center">SCOPE</th>
+            <th class="text-center">ESTADO</th>
+            <th class="text-right cell-pr">ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr>
+            <td colspan="5" class="text-center text-muted">Cargando...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal" aria-hidden="true" style="display: none;">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-label="Checklist item">
+      <h2 class="section-title modal-title-sm modal-title-left" id="modalTitle">CHECKLIST</h2>
+      <p class="section-desc modal-desc-sm modal-desc-left" id="modalSubtitle">Crear o editar ítem.</p>
+
+      <form id="form" class="mt-2">
+        <input type="hidden" id="fId" />
+
+        <div class="mt-2">
+          <label class="input-label" for="fScope">Scope</label>
+          <select id="fScope" class="modal-select">
+            <option value="OPERATIVO">OPERATIVO</option>
+            <option value="ADMIN">ADMIN</option>
+          </select>
+        </div>
+
+        <div class="mt-2">
+          <label class="input-label" for="fTitle">Título</label>
+          <input id="fTitle" class="modal-input" type="text" required placeholder="Ej: Revisar stock actual" />
+        </div>
+
+        <div class="mt-2">
+          <label class="input-label" for="fDesc">Descripción (opcional)</label>
+          <textarea id="fDesc" class="modal-input" rows="3" placeholder="Detalle breve..."></textarea>
+        </div>
+
+        <div class="mt-2">
+          <label class="input-label" for="fOrder">Orden</label>
+          <input id="fOrder" class="modal-input" type="number" min="0" step="1" placeholder="100" />
+        </div>
+
+        <div class="mt-2">
+          <label class="toolbar-check-inline section-desc">
+            <input type="checkbox" id="fActive" />
+            Ítem activo
+          </label>
+        </div>
+      </form>
+
+      <div class="modal-btns">
+        <button type="button" class="btn-secondary" id="btnCancel">Cancelar</button>
+        <button type="button" class="btn-primary" id="btnSave">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../../config/config.js"></script>
+  <script src="../../js/pages/master-checklist.js"></script>
+</body>
+</html>

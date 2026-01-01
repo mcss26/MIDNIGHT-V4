@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midnight — Imprimir Anticipadas</title>
+  <meta name="theme-color" content="#0B0C0D" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="../../css/main.css" />
+  <!-- Page Specific -->
+  <link rel="stylesheet" href="../../css/pages/logistica-qr.css" />
+
+  <!-- QR generator library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" defer></script>
+</head>
+
+<body>
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-top">
+        <div>
+          <button type="button" class="btn-secondary btn-back" id="btnBack">VOLVER</button>
+        </div>
+
+        <div class="admin-logo">QR ANTICIPADAS</div>
+
+        <div class="admin-header-right">
+          <span class="session-chip">Logística</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <div class="section-header">
+        <div class="actions">
+            <button id="btnPreview" class="btn-secondary" type="button">Previsualizar</button>
+            <button id="btnPrint" class="btn-primary" type="button">
+                Guardar e Imprimir
+            </button>
+        </div>
+    </div>
+
+    <div class="qr-grid">
+      <!-- Configuración -->
+      <section class="qr-config-panel">
+          <div class="field">
+            <label class="input-label">Nombre del Lote</label>
+            <input id="batchName" class="modal-input" type="text" placeholder="Ej: VIP Viernes" value="Entrada General" />
+          </div>
+
+          <div class="field">
+            <label class="input-label">URL / Base</label>
+            <textarea id="baseText" class="modal-input" placeholder="https://midnightclub.com.ar/accesos">https://midnightclub.com.ar/accesos</textarea>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label class="input-label">Modo</label>
+              <select id="mode" class="modal-select">
+                <option value="same">Estático (Mismo texto)</option>
+                <option value="seq">Secuencial (Base + N°)</option>
+                <option value="uuid" selected>Único (Base + UUID)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="input-label">Cantidad</label>
+              <input id="qty" class="modal-input" type="number" min="1" max="500" value="20" />
+            </div>
+          </div>
+
+          <div class="row3">
+            <div class="field">
+              <label class="input-label">Papel</label>
+              <select id="paper" class="modal-select">
+                <option value="80">80mm</option>
+                <option value="58">58mm</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="input-label">Tamaño QR</label>
+              <select id="qrSize" class="modal-select">
+                <option value="28">28mm</option>
+                <option value="32">32mm</option>
+                <option value="35" selected>35mm</option>
+                <option value="40">40mm</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="input-label">Separación</label>
+              <select id="gap" class="modal-select">
+                <option value="3">3mm</option>
+                <option value="6" selected>6mm</option>
+                <option value="10">10mm</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field" id="seqOptions" style="display: none">
+            <label class="input-label">Configuración Secuencial</label>
+            <div class="row3">
+              <div class="field">
+                <input id="seqStart" class="modal-input" type="number" min="0" value="1" placeholder="Inicio" />
+              </div>
+              <div class="field">
+                <input id="seqDigits" class="modal-input" type="number" min="1" max="10" value="6" placeholder="Dígitos" />
+              </div>
+              <div class="field">
+                <input id="seqSep" class="modal-input" type="text" value="-" placeholder="Sep." maxlength="2" />
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="input-label">Título Ticket</label>
+            <input id="titleText" class="modal-input" type="text" placeholder="MIDNIGHT CLUB" value="MIDNIGHT CLUB" />
+          </div>
+      </section>
+
+      <!-- Preview -->
+      <section class="qr-preview-panel">
+          <div class="preview-header">
+            <div>
+              <span class="preview-title">Vista Previa</span>
+            </div>
+            <button id="btnClear" class="btn-soft" type="button">LIMPIAR</button>
+          </div>
+          <div id="previewArea" class="preview-area">
+            <!-- QR cards will be injected here -->
+          </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="printArea"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="../../config/config.js"></script>
+  <script src="../../js/pages/logistica-qr.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midnight — Pedido de Stock</title>
+  <meta name="theme-color" content="#0B0C0D" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/pages/operativo-stock-pedido.css" />
+</head>
+
+<body>
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-top">
+        <div>
+          <button type="button" class="btn-secondary btn-back" id="btnBack">VOLVER</button>
+        </div>
+
+        <div class="admin-logo">PEDIDO DE STOCK</div>
+
+        <div class="admin-header-right">
+          <span class="session-chip">Operativo</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <nav class="tab-nav" id="mainTabs" aria-label="Pedido stock tabs">
+      <button type="button" class="tab-btn active" data-tab="SOLICITAR">SOLICITAR</button>
+      <button type="button" class="tab-btn" data-tab="CONFIRMAR">CONFIRMAR</button>
+      <button type="button" class="tab-btn" data-tab="PENDIENTES">PENDIENTES</button>
+    </nav>
+
+    <div id="statusLine" class="status-line"></div>
+
+    <!-- SOLICITAR -->
+    <section id="panelSolicitar">
+      <div class="table-container">
+        <table class="sku-table" id="solicitarTable" aria-label="Solicitar stock">
+          <thead>
+            <tr>
+              <th class="cell-pl">NOMBRE</th>
+              <th class="text-center">STOCK ACTUAL</th>
+              <th class="text-center">STOCK IDEAL</th>
+              <th class="text-center cell-pr">SOLICITAR</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="4" class="text-center text-muted">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- CONFIRMAR -->
+    <section id="panelConfirmar" style="display:none;">
+      <div class="table-container">
+        <table class="sku-table" id="confirmarTable" aria-label="Confirmar pedido">
+          <thead>
+            <tr>
+              <th class="cell-pl">NOMBRE</th>
+              <th class="text-center">PACKS</th>
+              <th class="text-center">UNIDADES</th>
+              <th class="text-center">STOCK ACTUAL</th>
+              <th class="text-center">STOCK TOTAL</th>
+              <th class="text-center cell-pr">QUITAR</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="6" class="text-center text-muted">No hay nada para confirmar.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar-left"></div>
+        <div class="toolbar-right">
+          <button type="button" class="btn-primary" id="btnConfirmAll">CONFIRMAR</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PENDIENTES -->
+    <section id="panelPendientes" style="display:none;">
+      <div class="table-container">
+        <table class="sku-table" id="pendientesTable" aria-label="Pedidos pendientes">
+          <thead>
+            <tr>
+              <th class="cell-pl">FECHA</th>
+              <th class="text-center">ITEMS</th>
+              <th class="text-center">ESTADO</th>
+              <th class="text-center cell-pr">DETALLE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="4" class="text-center text-muted">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="../../config/config.js"></script>
+  <script src="../../js/pages/operativo-stock-pedido.js"></script>
+</body>
+</html>

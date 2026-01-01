@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midnight — Admin Stock Check</title>
+  <meta name="theme-color" content="#0B0C0D" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="../../css/main.css" />
+  <!-- Page Specific -->
+  <link rel="stylesheet" href="../../css/pages/admin-stock.css" />
+</head>
+
+<body>
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-top">
+        <div>
+          <button type="button" class="btn-secondary btn-back" id="btnBack">VOLVER</button>
+        </div>
+
+        <div class="admin-logo">STOCK CHECK</div>
+
+        <div class="admin-header-right">
+          <span class="session-chip">Admin</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <input id="search" class="search-input-admin" type="text" placeholder="Buscar por nombre o código..." />
+        <label class="toolbar-check section-desc">
+          <input type="checkbox" id="showInactive" />
+          Ver inactivos
+        </label>
+      </div>
+
+      <div class="toolbar-right">
+        <button class="btn-secondary" type="button" id="btnRefresh">Refrescar</button>
+      </div>
+    </div>
+
+    <nav class="tab-nav" id="categoryTabs" aria-label="Categorías">
+      <button type="button" class="tab-btn active" data-cat="ALL">TODOS</button>
+      <button type="button" class="tab-btn" data-cat="BEBIDAS">BEBIDAS</button>
+      <button type="button" class="tab-btn" data-cat="INSUMOS BARRA">BARRA</button>
+      <button type="button" class="tab-btn" data-cat="LIMPIEZA">LIMPIEZA</button>
+      <button type="button" class="tab-btn" data-cat="LIBRERIA">LIBRERIA</button>
+      <button type="button" class="tab-btn" data-cat="MANTENIMIENTO">MANTENIMIENTO</button>
+      <button type="button" class="tab-btn" data-cat="OTROS">OTROS</button>
+    </nav>
+
+    <div class="admin-stock-meta" aria-label="Estado">
+      <div class="hint" id="statusLine"></div>
+      <div class="count" id="countLine"></div>
+    </div>
+
+    <div class="table-container">
+      <table class="sku-table" id="adminStockTable" aria-label="Monitoreo de Stock Admin">
+        <thead>
+          <tr>
+            <th class="cell-pl">NOMBRE</th>
+            <th class="text-center">STOCK ACTUAL</th>
+            <th class="text-center">STOCK IDEAL</th>
+            <th class="text-center">DIF</th>
+            <th class="text-center">ESTADO</th>
+            <th class="text-center">L. CHECK</th>
+            <th class="text-center cell-pr">SOLICITAR</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="7" class="text-center text-muted">Cargando monitoreo de stock...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="../../config/config.js"></script>
+  <script src="../../js/pages/admin-stock.js"></script>
+</body>
+</html>

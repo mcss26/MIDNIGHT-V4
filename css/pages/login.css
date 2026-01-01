@@ -1,0 +1,186 @@
+.auth-wrap {
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: var(--bg-body);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background Blobs */
+.auth-wrap::before,
+.auth-wrap::after {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  filter: blur(140px);
+  z-index: 0;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.auth-wrap::before {
+  background: var(--accent-red);
+  top: -100px;
+  left: -100px;
+  animation: float 20s infinite alternate ease-in-out;
+}
+
+.auth-wrap::after {
+  background: var(--accent-blue);
+  bottom: -100px;
+  right: -100px;
+  animation: float 25s infinite alternate-reverse ease-in-out;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(100px, 50px) scale(1.1); }
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(17, 18, 23, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+  padding: 40px;
+  position: relative;
+  z-index: 1;
+  animation: cardEntry 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes cardEntry {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.auth-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-red), transparent);
+  opacity: 0.8;
+}
+
+.auth-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0 0 8px 0;
+  background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
+
+.auth-sub {
+  margin: 0 0 32px 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: center;
+  opacity: 0.8;
+}
+
+.auth-wrap .form-row { margin-top: 20px; }
+
+.auth-wrap .input-label {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.auth-wrap .input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 48px;
+}
+
+.auth-wrap .input:focus {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.auth-wrap .input:focus + .input-label {
+  color: #fff;
+}
+
+.auth-wrap .form-actions {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-wrap .btn-primary {
+  width: 100%;
+  height: 48px;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  background: var(--accent-red);
+  color: #fff; /* Changed to white for better contrast with the red glow */
+  box-shadow: 0 8px 24px rgba(255, 10, 30, 0.2);
+  border: none;
+  border-radius: var(--radius-md);
+}
+
+.auth-wrap .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(255, 10, 30, 0.4);
+}
+
+.auth-wrap .btn-primary:active {
+  transform: translateY(0);
+}
+
+.auth-wrap .msg {
+  margin-top: 16px;
+  min-height: 20px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.auth-wrap .msg.ok { color: var(--accent-green); font-weight: 600; }
+.auth-wrap .msg.err { color: var(--accent-red); font-weight: 600; }
+
+/* Progressive entry for form elements */
+.auth-card form > * {
+  animation: fadeInUp 0.5s ease backwards;
+}
+.auth-card form > *:nth-child(1) { animation-delay: 0.1s; }
+.auth-card form > *:nth-child(2) { animation-delay: 0.2s; }
+.auth-card form > *:nth-child(3) { animation-delay: 0.3s; }
+.auth-card form > *:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

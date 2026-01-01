@@ -1,0 +1,39 @@
+/* /css/pages/operativo-stock-pedido.css */
+
+/* Status Line */
+.status-line {
+  height: 20px;
+  font-size: 0.85rem;
+  color: #60a5fa;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+/* Inputs specialized for this page */
+.table-input {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.table-input:focus {
+  outline: none;
+  border-color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.table-input--narrow { width: 80px; }
+
+/* Toolbar */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.5rem;
+}

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midnight — Staff</title>
+  <meta name="theme-color" content="#0B0C0D" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../../css/main.css" />
+  <style>
+    .dash-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 32px;
+    }
+    .dash-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .dash-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--accent-red);
+      transform: translateY(-2px);
+    }
+    .dash-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.05em;
+    }
+    .dash-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+
+<body>
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-top">
+        <div class="admin-logo">STAFF PORTAL</div>
+        <div class="admin-header-right">
+          <button id="btnLogout" class="btn-secondary" style="padding: 6px 12px; font-size: 10px;">CERRAR SESIÓN</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <div class="section-header">
+      <h1 class="admin-title">Panel de Staff</h1>
+      <p class="admin-subtitle">Acceso a herramientas operativas.</p>
+    </div>
+
+    <div class="dash-grid">
+      <a href="staff-acreditador.html" class="dash-card">
+        <div class="dash-title">ACREDITAR QR</div>
+        <p class="dash-desc">Escaneo y validación de entradas para eventos.</p>
+      </a>
+      
+      <!-- Placeholder for other staff tools -->
+      <div class="dash-card" style="opacity: 0.5; cursor: not-allowed;">
+        <div class="dash-title">PRÓXIMAMENTE</div>
+        <p class="dash-desc">Más herramientas del equipo.</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../../config/config.js"></script>
+  <script>
+    const client = window.supabaseClient;
+    document.getElementById('btnLogout').addEventListener('click', async () => {
+      await client.auth.signOut();
+      window.location.replace('../auth/login.html');
+    });
+
+    async function checkAccess() {
+      const { data: { session } } = await client.auth.getSession();
+      if (!session) {
+        window.location.replace('../auth/login.html');
+        return;
+      }
+      const { data: profile } = await client
+        .from('profiles')
+        .select('role')
+        .eq('id', session.user.id)
+        .single();
+      
+      if (!profile || !['STAFF', 'ADMIN', 'OPERATIVO', 'LOGISTICA'].includes(profile.role.toUpperCase())) {
+        window.location.replace('../auth/login.html');
+      }
+    }
+    checkAccess();
+  </script>
+</body>
+</html>

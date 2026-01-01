@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midnight — Admin Plan</title>
+  <meta name="theme-color" content="#0B0C0D" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="../../css/main.css" />
+  <!-- Page Specific (Shared with other admin modules) -->
+  <link rel="stylesheet" href="../../css/pages/admin-plan.css" />
+</head>
+
+<body>
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-header-top">
+        <div>
+          <button type="button" class="btn-secondary btn-back" id="btnBack">VOLVER</button>
+        </div>
+
+        <div class="admin-logo">PLANIFICACIÓN</div>
+
+        <div class="admin-header-right">
+          <span class="session-chip">Admin</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <nav class="tab-nav" id="mainTabs" aria-label="Tabs de Planificación">
+      <button type="button" class="tab-btn active" data-tab="CALENDARIO">CALENDARIO</button>
+      <button type="button" class="tab-btn" data-tab="MODIFICAR">MODIFICAR PLANES</button>
+    </nav>
+
+    <div id="statusLine" class="status-line"></div>
+
+    <!-- =======================
+         TAB: CALENDARIO
+         ======================= -->
+    <section id="panelCalendario">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <button type="button" class="btn-secondary" id="calPrev">◀</button>
+          <div class="cal-title" id="calTitle">—</div>
+          <button type="button" class="btn-secondary" id="calNext">▶</button>
+        </div>
+        <div class="toolbar-right">
+          <button type="button" class="btn-secondary" id="calToday">HOY</button>
+        </div>
+      </div>
+
+      <section class="cal-mini-wrap" aria-label="Calendario de Eventos">
+        <div class="cal-mini-card">
+          <div class="cal-mini-month" id="calMonth">—</div>
+          <div class="cal-mini-weekdays" id="calWeekdays" aria-hidden="true"></div>
+          <div class="cal-mini-grid" id="calGrid"></div>
+        </div>
+      </section>
+
+      <div class="table-container">
+        <table class="sku-table" aria-label="Acciones de planificación">
+          <thead>
+            <tr>
+              <th class="cell-pl">FECHA</th>
+              <th class="text-center">ESTADO</th>
+              <th class="text-right cell-pr">ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody id="dateActionsTbody">
+            <tr><td colspan="3" class="text-center text-muted">Seleccioná una fecha.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="planEditorWrapCal" class="is-hidden">
+        <!-- Reusable Editor for CAL -->
+        <div class="editor-stack">
+          <!-- DOTACIÓN -->
+          <div class="table-container">
+            <table class="sku-table">
+              <thead>
+                <tr>
+                  <th class="cell-pl">DOTACIÓN</th>
+                  <th class="text-right">TOTAL</th>
+                  <th class="text-center cell-pr">ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="list-row">
+                  <td class="cell-pl">
+                    <div class="row-title">Cargos y cantidades</div>
+                    <div class="row-sub-text">Define el equipo necesario para esta fecha.</div>
+                  </td>
+                  <td class="text-right">
+                    <div class="row-title" id="staffTotalTextCal">$0</div>
+                    <div class="row-sub-text" id="staffMetaTextCal">0 cargos</div>
+                  </td>
+                  <td class="text-center cell-pr">
+                    <button type="button" class="btn-secondary" id="btnEditStaffCal">EDITAR</button>
+                    <button type="button" class="btn-secondary" id="btnGoCargosCal">MÁS</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3" class="cell-pl cell-pr">
+                    <div class="details-grid" id="staffSummaryGridCal"></div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- COSTOS BASE -->
+          <div class="table-container">
+            <table class="sku-table">
+              <thead>
+                <tr>
+                  <th class="cell-pl">COSTOS BASE (APERTURA)</th>
+                  <th class="text-right">TOTAL</th>
+                  <th class="text-center cell-pr">ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="list-row">
+                  <td class="cell-pl">
+                    <div class="row-title">Insumos y Logística</div>
+                    <div class="row-sub-text">Costos fijos y variables automatizados.</div>
+                  </td>
+                  <td class="text-right">
+                    <div class="row-title" id="openingTotalTextCal">$0</div>
+                    <div class="row-sub-text" id="openingMetaTextCal">0 items</div>
+                  </td>
+                  <td class="text-center cell-pr">
+                    <button type="button" class="btn-secondary" id="btnGoPagosCal">PAGOS</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3" class="cell-pl cell-pr">
+                    <div class="table-container-inner">
+                      <table class="sku-table-inner">
+                        <tbody id="openingCostsTbodyCal"></tbody>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- PRESUPUESTO -->
+          <div class="table-container">
+            <table class="sku-table">
+              <thead>
+                <tr>
+                  <th class="cell-pl">TOTAL ESTIMADO</th>
+                  <th class="text-right">PRESUPUESTO</th>
+                  <th class="text-center cell-pr">ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="list-row">
+                  <td class="cell-pl">
+                    <textarea id="planNotesCal" class="search-input-admin" placeholder="Notas del plan..." style="width:100%; min-height:60px; margin-top:8px;"></textarea>
+                  </td>
+                  <td class="text-right">
+                    <div class="row-title" id="budgetTotalTextCal">$0</div>
+                    <div class="row-sub-text" id="budgetMetaTextCal">ARS</div>
+                  </td>
+                  <td class="text-center cell-pr">
+                    <button type="button" class="btn-primary" id="btnSavePlanCal">GUARDAR PLAN</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================
+         TAB: MODIFICAR
+         ======================= -->
+    <section id="panelModificar" class="is-hidden">
+      <div class="toolbar">
+        <div class="toolbar-left"><div class="section-desc">Historial de Planes</div></div>
+        <div class="toolbar-right">
+          <button type="button" class="btn-secondary" id="btnRefreshPlans">ACTUALIZAR</button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="sku-table" id="plansTable">
+          <thead>
+            <tr>
+              <th class="cell-pl">FECHA</th>
+              <th class="text-center">PLAN</th>
+              <th class="text-center">EVENTO</th>
+              <th class="text-right">TOTAL</th>
+              <th class="text-center cell-pr">ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="5" class="text-center">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="modifyEditorWrap" class="is-hidden">
+        <div class="editor-header">
+          <div class="editor-header-info">
+            <h2 id="modifyTitle">—</h2>
+            <p id="modifySub">—</p>
+          </div>
+          <div class="editor-header-actions">
+            <button type="button" class="btn-secondary" id="btnMarkOpen">ABRIR EVENTO</button>
+            <button type="button" class="btn-danger" id="btnCloseEvent">CERRAR EVENTO</button>
+          </div>
+        </div>
+
+        <div id="planEditorWrapMod" class="editor-stack">
+          <!-- DOTACIÓN -->
+          <div class="table-container">
+            <table class="sku-table">
+              <thead>
+                <tr>
+                  <th class="cell-pl">DOTACIÓN</th>
+                  <th class="text-right">TOTAL</th>
+                  <th class="text-center cell-pr">ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="list-row">
+                  <td class="cell-pl">
+                    <div class="row-title" id="staffMetaTextMod">Cargos y cantidades</div>
+                  </td>
+                  <td class="text-right">
+                    <div class="row-title" id="staffTotalTextMod">$0</div>
+                  </td>
+                  <td class="text-center cell-pr">
+                    <button type="button" class="btn-secondary" id="btnEditStaffMod">EDITAR</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3" class="cell-pl cell-pr">
+                    <div class="details-grid" id="staffSummaryGridMod"></div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- COSTOS BASE -->
+          <div class="table-container">
+            <table class="sku-table">
+              <thead>
+                <tr>
+                  <th class="cell-pl">COSTOS BASE</th>
+                  <th class="text-right">TOTAL</th>
+                  <th class="text-center cell-pr">ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="list-row">
+                  <td class="cell-pl">
+                    <div class="row-title" id="openingMetaTextMod">Items de apertura</div>
+                  </td>
+                  <td class="text-right">
+                    <div class="row-title" id="openingTotalTextMod">$0</div>
+                  </td>
+                  <td class="text-center cell-pr">
+                    <button type="button" class="btn-secondary" id="btnGoPagosMod">VER MÁS</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3" class="cell-pl cell-pr">
+                    <div class="table-container-inner">
+                      <table class="sku-table-inner">
+                        <tbody id="openingCostsTbodyMod"></tbody>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- TOTAL -->
+          <div class="table-container">
+            <table class="sku-table">
+              <thead>
+                <tr>
+                  <th class="cell-pl">MODIFICAR PLAN</th>
+                  <th class="text-right">TOTAL</th>
+                  <th class="text-center cell-pr">ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="list-row">
+                  <td class="cell-pl">
+                    <textarea id="planNotesMod" class="search-input-admin" placeholder="Notas..." style="width:100%; min-height:60px; margin-top:8px;"></textarea>
+                  </td>
+                  <td class="text-right">
+                    <div class="row-title" id="budgetTotalTextMod">$0</div>
+                  </td>
+                  <td class="text-center cell-pr">
+                    <button type="button" class="btn-primary" id="btnSavePlanMod">GUARDAR CAMBIOS</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL DOTACIÓN -->
+  <div class="modal-overlay" id="staffModal" style="display:none;">
+    <div class="modal-box">
+      <h2 class="modal-title-sm">DOTACIÓN</h2>
+      <div class="toolbar" style="margin:16px 0;">
+        <input id="staffSearch" class="search-input-admin" type="text" placeholder="Buscar cargo..." />
+      </div>
+      <div class="table-container" style="max-height:400px; overflow-y:auto;">
+        <table class="sku-table">
+          <thead>
+            <tr>
+              <th class="cell-pl">CARGO</th>
+              <th class="text-right">JORNAL</th>
+              <th class="text-center">CANT</th>
+              <th class="text-right cell-pr">TOTAL</th>
+            </tr>
+          </thead>
+          <tbody id="staffModalTbody"></tbody>
+        </table>
+      </div>
+      <div class="modal-btns">
+        <button type="button" class="btn-secondary" id="btnStaffCancel">Cancelar</button>
+        <button type="button" class="btn-primary" id="btnStaffApply">Aplicar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="../../config/config.js"></script>
+  <script src="../../js/pages/admin-plan.js"></script>
+</body>
+</html>

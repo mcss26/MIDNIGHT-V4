@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Midnight — Acreditador</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/pages/staff-acreditador.css">
+    
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- QR Scanner -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body>
+    <header class="admin-header">
+        <div class="admin-header-inner">
+            <div class="admin-header-top">
+                <div>
+                   <button type="button" class="btn-secondary btn-back" id="btnBack">VOLVER</button>
+                </div>
+                <div class="admin-logo">ACREDITADOR</div>
+                <div class="admin-header-right">
+                    <span class="session-chip" id="userName">Staff</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-container">
+        <div class="scanner-section">
+            <div class="scanner-container">
+                <div id="reader" class="scanner-box"></div>
+                <!-- Status Card Overlaying the scanner or below -->
+            </div>
+        </div>
+
+        <div class="status-section">
+            <div id="statusCard" class="status-card idle">
+                <div class="status-icon"></div>
+                <div class="status-details">
+                    <h3 id="statusTitle">Listo para escanear</h3>
+                    <p id="statusMsg">Apuntá al código QR del cliente.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="manual-section">
+            <button id="btnManualInput" class="btn-secondary" style="width: 100%; padding: 12px;">Ingreso Manual</button>
+            <div id="manualInputBox" class="manual-input-box hidden">
+                <input type="text" id="manualCode" placeholder="Código QR">
+                <button id="btnCheckManual" class="btn-primary">Validar</button>
+            </div>
+        </div>
+
+        <div class="history-section">
+            <div class="history-header">
+                <h3>Últimos Accesos</h3>
+                <span class="count-badge" id="checkinCount">0</span>
+            </div>
+            <div id="historyList" class="history-list">
+                <!-- History items will be injected here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Feedback Sounds -->
+    <audio id="soundSuccess" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+    <audio id="soundError" src="https://assets.mixkit.co/active_storage/sfx/2573/2573-preview.mp3"></audio>
+
+    <!-- Scripts -->
+    <script src="../../config/config.js"></script>
+    <script src="../../js/pages/staff-acreditador.js" defer></script>
+</body>
+</html>

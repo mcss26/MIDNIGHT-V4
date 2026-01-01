@@ -1,0 +1,207 @@
+/* /css/pages/staff-acreditador.css */
+
+.scanner-section {
+    width: 100%;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.scanner-container {
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+}
+
+.scanner-box {
+    width: 100%;
+    aspect-ratio: 1;
+    background: #000;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+}
+
+/* Custom overlay logic since html5-qrcode's overlay is basic */
+#reader__scan_region {
+    background: transparent !important;
+}
+
+/* Status Cards */
+.status-section {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 24px;
+}
+
+.status-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.status-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.status-details {
+    flex: 1;
+}
+
+.status-details h3 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-details p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* Status Variants */
+.status-card.idle .status-icon::before { content: '📷'; }
+
+.status-card.success { 
+    background: rgba(34, 197, 94, 0.08); 
+    border-color: rgba(34, 197, 94, 0.3);
+}
+.status-card.success .status-icon {
+    background: #22c55e;
+    color: #000;
+}
+.status-card.success .status-icon::before { content: '✓'; }
+.status-card.success h3 { color: #22c55e; }
+
+.status-card.error { 
+    background: rgba(255, 10, 30, 0.08); 
+    border-color: rgba(255, 10, 30, 0.3);
+}
+.status-card.error .status-icon {
+    background: var(--accent-red);
+    color: #fff;
+}
+.status-card.error .status-icon::before { content: '✕'; }
+.status-card.error h3 { color: var(--accent-red); }
+
+/* Manual Input */
+.manual-section {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 32px;
+}
+
+.manual-input-box {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+.manual-input-box.hidden { display: none; }
+
+.manual-input-box input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-subtle);
+    color: #fff;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-main);
+}
+
+.manual-input-box input:focus {
+    outline: none;
+    border-color: var(--accent-red);
+}
+
+/* History */
+.history-section {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.history-header h3 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+}
+
+.count-badge {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+}
+
+.h-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.h-code {
+    font-family: monospace;
+    font-size: 13px;
+    color: #fff;
+}
+
+.h-time {
+    font-size: 11px;
+    color: var(--text-tertiary);
+}
+
+.h-status {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.h-status.ok { color: #22c55e; }
+.h-status.no { color: var(--accent-red); }

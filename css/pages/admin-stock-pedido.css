@@ -1,0 +1,128 @@
+/* /css/pages/admin-stock-pedido.css */
+
+.page-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+}
+
+.page-meta .hint {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.page-meta .count {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-primary, #6366f1);
+  letter-spacing: 0.05em;
+}
+
+/* TABS rely on global components/tabs.css */
+
+/* TABLE ENHANCEMENTS */
+.sku-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.list-row {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.list-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.list-row.is-open {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.list-row.is-low .row-diff {
+  color: #ef4444;
+  font-weight: 800;
+}
+
+.row-title {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.row-sub-text {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.row-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+/* DETAILS ROW */
+.details-row td {
+  padding: 0 !important;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.details-wrap {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  border-bottom: 1px solid var(--border-subtle);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.details-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.kv {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kv .k {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.kv .v {
+  font-size: 13px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.is-hidden { display: none !important; }
+
+/* UTILS */
+.btn-xs {
+  padding: 4px 10px;
+  font-size: 11px;
+  border-radius: 6px;
+}
+
+@media (max-width: 768px) {
+  .row-actions { flex-direction: column; align-items: stretch; }
+  .details-wrap { grid-template-columns: 1fr; }
+}
